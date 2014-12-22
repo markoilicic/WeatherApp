@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Bind Calculator</string>
+    <string name="action_settings">Settings</string>
+
+    <!-- MainActivity-->
+    <string name="tv_result_default">0</string>
+    <string name="btn_click">Click me!</string>
+
+</resources>
