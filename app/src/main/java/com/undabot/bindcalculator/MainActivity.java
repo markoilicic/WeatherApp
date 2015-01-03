@@ -1,28 +1,26 @@
 package com.undabot.bindcalculator;
 
+import android.app.Activity;
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import rx.Observable;
+import rx.Subscriber;
 import rx.android.observables.ViewObservable;
 import rx.functions.Action1;
 
 
-public class MainActivity extends ActionBarActivity {
+public class MainActivity extends Activity {
 
     @InjectView(R.id.btn_click)
     Button btnClick;
     @InjectView(R.id.tv_result)
     TextView tvResultLabel;
 
-    //Inital values
-    private int mNumOne = 0;
-    private int mNumTwo = 1;
-    private int rez;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,25 +29,53 @@ public class MainActivity extends ActionBarActivity {
 
         ButterKnife.inject(this);
 
+        //Create button click observable
         Observable<Button> btnClickObservable = ViewObservable.clicks(btnClick, false);
+
+        //create calculator observable
+        final Observable<Integer> calculator = Observable.create(new Observable.OnSubscribe<Integer>() {
+
+            @Override
+            public void call(Subscriber<? super Integer> s) {
+                int f1 = 1, f2 = 1, fn = 0;
+                s.onNext(1);
+                while (!s.isUnsubscribed() || fn >= 0) {
+                    fn = f1 + f2;
+                    f1 = f2;
+                    f2 = fn;
+                    s.onNext(fn);
+                }
+            }
+
+        });
+
+        //Subscribe for button click
         btnClickObservable.subscribe(new Action1<Button>() {
+            int btnClickCount = 1;
+
             @Override
             public void call(Button button) {
-                tvResultLabel.setText(String.valueOf(getResult()));
-            }
-        });
-    }
 
-    /**
-     * Get sum of last two results and set new values
-     *
-     * @return int
-     */
-    public int getResult() {
-        rez = mNumOne + mNumTwo;
-        mNumOne = mNumTwo;
-        mNumTwo = rez;
-        return rez;
+                //Subscribe for calculator
+                calculator.take(btnClickCount).last().subscribe(new Action1<Integer>() {
+                    @Override
+                    public void call(Integer result) {
+                        if (result >= 0) {
+                            tvResultLabel.setText(String.valueOf(result));
+                            btnClickCount++;
+                        } else {
+                            Toast.makeText(getApplicationContext(), R.string.reset_calculator_text, Toast.LENGTH_SHORT).show();
+                            tvResultLabel.setText(R.string.tv_result_default);
+                            btnClickCount = 1;
+                        }
+
+                    }
+                });
+
+            }
+
+        });
+
     }
 
 }

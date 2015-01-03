@@ -2,13 +2,6 @@
 <items version="2" >
 
     <item
-        jar="/home/marko/Android/Projects Undabot/BindCalculator/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/21.0.3/classes.jar"
-        jumboMode="false"
-        revision="21.0.2"
-        sha1="81d42bf983a8741f4888a6e333e454e4a5e0eeb7">
-        <dex dex="/home/marko/Android/Projects Undabot/BindCalculator/app/build/intermediates/pre-dexed/debug/classes-1bf25f457fd6526449f2eb38b429553d153392fd.jar" />
-    </item>
-    <item
         jar="/home/marko/.gradle/caches/modules-2/files-2.1/com.netflix.rxjava/rxjava-core/0.19.6/b18f01b635f39f0a6af7ae792f07cb003a51e6a2/rxjava-core-0.19.6.jar"
         jumboMode="false"
         revision="21.0.2"
@@ -35,6 +28,13 @@
         revision="21.0.2"
         sha1="4b74cefe1f0c1b819e7260c8627a14674e37fd35">
         <dex dex="/home/marko/Android/Projects Undabot/BindCalculator/app/build/intermediates/pre-dexed/debug/support-annotations-21.0.3-ee6adc1e6e7c1b1598b6e6d645f6a7d99d029778.jar" />
+    </item>
+    <item
+        jar="/home/marko/Android/Projects Undabot/BindCalculator/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/21.0.3/classes.jar"
+        jumboMode="false"
+        revision="21.0.2"
+        sha1="81d42bf983a8741f4888a6e333e454e4a5e0eeb7">
+        <dex dex="/home/marko/Android/Projects Undabot/BindCalculator/app/build/intermediates/pre-dexed/debug/classes-1bf25f457fd6526449f2eb38b429553d153392fd.jar" />
     </item>
     <item
         jar="/home/marko/.gradle/caches/modules-2/files-2.1/com.netflix.rxjava/rxjava-android/0.19.6/c4a0635d906397bbe144896fa6f6867668cabb40/rxjava-android-0.19.6.jar"
