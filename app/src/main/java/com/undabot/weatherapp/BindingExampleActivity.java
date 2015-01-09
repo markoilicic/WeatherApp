@@ -1,4 +1,4 @@
-package com.undabot.bindcalculator;
+package com.undabot.weatherapp;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -14,7 +14,7 @@ import rx.android.observables.ViewObservable;
 import rx.functions.Action1;
 
 
-public class MainActivity extends Activity {
+public class BindingExampleActivity extends Activity {
 
     @InjectView(R.id.btn_click)
     Button btnClick;
@@ -25,7 +25,7 @@ public class MainActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_binding_example);
 
         ButterKnife.inject(this);
 
