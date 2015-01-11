@@ -1,10 +1,12 @@
-package com.undabot.weatherapp;
+package com.undabot.weatherapp.ui;
 
 import android.app.Activity;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.undabot.weatherapp.R;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;

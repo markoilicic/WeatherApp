@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <!-- General -->
     <string name="app_name">WeatherApp</string>
     <string name="action_settings">Settings</string>
 
@@ -8,5 +9,21 @@
     <string name="tv_result_default">0</string>
     <string name="btn_click">Click me!</string>
     <string name="reset_calculator_text">Maximum integer value reached! \nStarting over</string>
+
+    <!-- Sample texts -->
+    <string name="sample_city_name">Zagreb</string>
+    <string name="sample_temp_value">8,9</string>
+    <string name="sample_temp_unit">°C</string>
+    <string name="sample_weather_description">Light rain</string>
+    <string name="sample_wind_speed">15</string>
+    <string name="sample_day_name">FRI</string>
+
+    <!-- City current weather fragment -->
+    <string name="label_min_temp">min:</string>
+    <string name="label_max_temp">max:</string>
+    <string name="label_wind">wind:</string>
+    <string name="label_wind_speed_unit">m/s</string>
+
+
 
 </resources>
