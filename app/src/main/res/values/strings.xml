@@ -5,7 +5,7 @@
     <string name="app_name">WeatherApp</string>
     <string name="action_settings">Settings</string>
 
-    <!-- BindingExampleActivity-->
+    <!-- BindingExampleActivity -->
     <string name="tv_result_default">0</string>
     <string name="btn_click">Click me!</string>
     <string name="reset_calculator_text">Maximum integer value reached! \nStarting over</string>
@@ -23,7 +23,8 @@
     <string name="label_max_temp">max:</string>
     <string name="label_wind">wind:</string>
     <string name="label_wind_speed_unit">m/s</string>
-
-
+    <string name="title_activity_city_weather">City Weather</string>
+    <string name="title_activity_edit_city_list">Edit city list</string>
+    <string name="action_add_city">Add</string>
 
 </resources>
