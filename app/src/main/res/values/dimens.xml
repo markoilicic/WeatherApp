@@ -5,6 +5,7 @@
     <dimen name="general_padding">16dp</dimen>
     <dimen name="general_spacing">8dp</dimen>
     <dimen name="general_text_spacing">4dp</dimen>
+    <dimen name="nav_drawer_width">280dp</dimen>
 
 
 </resources>

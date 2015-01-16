@@ -14,4 +14,10 @@
     <!-- FLoating button colors -->
     <color name="floatting_btn_normal">#FF5722</color>
     <color name="floatting_btn_pressed">#FF9922</color>
+
+    <!-- Drawer -->
+    <color name="drawer_background">#CCC</color>
+    <color name="drawer_header_text">#FFF</color>
+    <color name="drawer_header_background">#FF5722</color>
+
 </resources>

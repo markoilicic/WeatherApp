@@ -26,5 +26,12 @@
     <string name="title_activity_city_weather">City Weather</string>
     <string name="title_activity_edit_city_list">Edit city list</string>
     <string name="action_add_city">Add</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <!-- Navigation Drawer -->
+    <string name="drawer_open">Open</string>
+    <string name="drawer_close">Close</string>
+    <string name="drawer_header_label">City list</string>
+    <string name="tilda">~</string>
 
 </resources>
