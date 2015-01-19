@@ -1,12 +1,31 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 xmlns:tools="http://schemas.android.com/tools"
+                xmlns:fab="http://schemas.android.com/apk/res-auto"
                 android:id="@+id/rl_root_container"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical"
                 tools:context="com.undabot.weatherapp.ui.EditCityListActivity">
 
-    <include layout="@layout/app_bar"
-             android:id="@+id/app_bar"/>
+    <include
+        layout="@layout/app_bar"
+        android:id="@+id/app_bar"/>
+
+    <ListView
+        android:id="@+id/lv_edit_activity_list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/app_bar"/>
+
+    <com.getbase.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab_add_city"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        fab:fab_icon="@android:drawable/ic_input_add"
+        fab:fab_plusIconColor="@color/white"
+        fab:fab_colorNormal="@color/floating_btn_normal"
+        fab:fab_colorPressed="@color/floating_btn_pressed"
+        android:layout_alignBottom="@+id/lv_edit_activity_list"
+        android:layout_centerHorizontal="true"/>
 
 </RelativeLayout>

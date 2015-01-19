@@ -4,6 +4,8 @@
     <!-- General -->
     <string name="app_name">WeatherApp</string>
     <string name="action_settings">Settings</string>
+    <string name="text_ok">OK</string>
+    <string name="text_cancel">Cancel</string>
 
     <!-- BindingExampleActivity -->
     <string name="tv_result_default">0</string>
@@ -33,5 +35,9 @@
     <string name="drawer_close">Close</string>
     <string name="drawer_header_label">City list</string>
     <string name="tilda">~</string>
+
+    <!-- Edit city list activity -->
+    <string name="edit_city_list_activity_dialog_title">Add new city</string>
+    <string name="edit_city_list_activity_dialog_hint">Type city name...</string>
 
 </resources>

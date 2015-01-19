@@ -10,13 +10,15 @@
     <color name="secondary_text">#727272</color>
     <color name="icons">#FFFFFF</color>
     <color name="divider">#B6B6B6</color>
+    <color name="white">#FFF</color>
+    <color name="black">#000</color>
 
     <!-- FLoating button colors -->
-    <color name="floatting_btn_normal">#FF5722</color>
-    <color name="floatting_btn_pressed">#FF9922</color>
+    <color name="floating_btn_normal">#FF5722</color>
+    <color name="floating_btn_pressed">#FF9922</color>
 
     <!-- Drawer -->
-    <color name="drawer_background">#CCC</color>
+    <color name="drawer_background">#FFF</color>
     <color name="drawer_header_text">#FFF</color>
     <color name="drawer_header_background">#FF5722</color>
 
