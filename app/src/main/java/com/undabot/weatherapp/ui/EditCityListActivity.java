@@ -24,12 +24,12 @@ import rx.functions.Action1;
 
 public class EditCityListActivity extends ActionBarActivity {
 
-	@InjectView(R.id.app_bar) Toolbar mAppBar;
+	@InjectView(R.id.toolbar) Toolbar toolbar;
 	@InjectView(R.id.lv_edit_activity_list) ListView lvCityList;
 	@InjectView(R.id.fab_add_city) FloatingActionButton btnAddCity;
 
 	private ArrayList<String> mCityList;
-	private CityListAdapter adapter;
+	private CityListAdapter cityListAdapter;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -38,12 +38,12 @@ public class EditCityListActivity extends ActionBarActivity {
 
 		ButterKnife.inject(this);
 
-		setSupportActionBar(mAppBar);
+		setSupportActionBar(toolbar);
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
 		mCityList = (ArrayList<String>) SharedPrefsUtils.getCityList();
-		adapter = new CityListAdapter(getApplicationContext(), mCityList);
-		lvCityList.setAdapter(adapter);
+		cityListAdapter = new CityListAdapter(getApplicationContext(), mCityList);
+		lvCityList.setAdapter(cityListAdapter);
 
 		//Listen for add new city button click
 		ViewObservable.clicks(btnAddCity, false).subscribe(new Action1<FloatingActionButton>() {
@@ -70,7 +70,7 @@ public class EditCityListActivity extends ActionBarActivity {
 						inputText = inputEditText.getText().toString();
 						mCityList.add(inputText);
 						SharedPrefsUtils.setCityList(mCityList);
-						lvCityList.setAdapter(adapter);
+						lvCityList.setAdapter(cityListAdapter);
 					}
 				}).setNegativeButton(R.string.text_cancel, new DialogInterface.OnClickListener() {
 					public void onClick(DialogInterface dialog, int whichButton) {
@@ -98,6 +98,7 @@ public class EditCityListActivity extends ActionBarActivity {
 				//Check if inputed city is already in list and disable OK button
 				if (mCityList.contains(inputText) || inputText.equals("")) {
 					addCityDialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(false);
+					//TODO replace this with showing text in alert dialog
 					Toast.makeText(getApplicationContext(), inputText + " already in list", Toast.LENGTH_SHORT).show();
 				} else {
 					addCityDialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(true);

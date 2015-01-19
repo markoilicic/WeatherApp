@@ -15,11 +15,12 @@
 
     <!-- FLoating button colors -->
     <color name="floating_btn_normal">#FF5722</color>
-    <color name="floating_btn_pressed">#FF9922</color>
+    <color name="floating_btn_pressed">#FF7022</color>
 
     <!-- Drawer -->
     <color name="drawer_background">#FFF</color>
     <color name="drawer_header_text">#FFF</color>
     <color name="drawer_header_background">#FF5722</color>
+    <color name="drawer_list_circle">#B6B6B6</color>
 
 </resources>

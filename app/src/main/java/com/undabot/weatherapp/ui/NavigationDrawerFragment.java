@@ -61,7 +61,7 @@ public class NavigationDrawerFragment extends Fragment {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 							 Bundle savedInstanceState) {
-		View view = inflater.inflate(R.layout.navigation_drawer_fragment, container, false);
+		View view = inflater.inflate(R.layout.drawer_fragment, container, false);
 		ButterKnife.inject(this, view);
 
 		lvDrawerCityList.setAdapter(adapter);
@@ -73,12 +73,12 @@ public class NavigationDrawerFragment extends Fragment {
 	 *
 	 * @param navDrawerId
 	 * @param drawerLayout
-	 * @param appBar
+	 * @param toolbar
 	 */
-	public void setUp(int navDrawerId, DrawerLayout drawerLayout, final Toolbar appBar) {
+	public void setUp(int navDrawerId, DrawerLayout drawerLayout, final Toolbar toolbar) {
 		View drawerContainer = getActivity().findViewById(navDrawerId);
 		mDrawerLayout = drawerLayout;
-		mDrawerToggle = new ActionBarDrawerToggle(getActivity(), mDrawerLayout, appBar, R.string.drawer_open, R.string.drawer_close) {
+		mDrawerToggle = new ActionBarDrawerToggle(getActivity(), mDrawerLayout, toolbar, R.string.drawer_open, R.string.drawer_close) {
 			@Override
 			public void onDrawerOpened(View drawerView) {
 				super.onDrawerOpened(drawerView);
@@ -99,9 +99,9 @@ public class NavigationDrawerFragment extends Fragment {
 			@Override
 			public void onDrawerSlide(View drawerView, float slideOffset) {
 				super.onDrawerSlide(drawerView, slideOffset);
-				//Change appBar transparency on drawer slide
+				//Change toolbar transparency on drawer slide
 				if (slideOffset < 0.4) {
-					appBar.setAlpha(1 - slideOffset);
+					toolbar.setAlpha(1 - slideOffset);
 				}
 			}
 		};
@@ -112,7 +112,7 @@ public class NavigationDrawerFragment extends Fragment {
 		}
 
 		mDrawerLayout.setDrawerListener(mDrawerToggle);
-		//Sync the state of appBar icon
+		//Sync the state of toolbar icon
 		mDrawerLayout.post(new Runnable() {
 			@Override
 			public void run() {

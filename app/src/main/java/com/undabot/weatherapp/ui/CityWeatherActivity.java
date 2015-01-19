@@ -12,28 +12,26 @@ import butterknife.InjectView;
 
 public class CityWeatherActivity extends ActionBarActivity {
 
-    @InjectView(R.id.app_bar)
-    Toolbar mAppBar;
-    @InjectView(R.id.drawer_layout)
-    DrawerLayout mDrawerLayout;
+	@InjectView(R.id.toolbar) Toolbar mToolbar;
+	@InjectView(R.id.drawer_layout) DrawerLayout mDrawerLayout;
 
-    private NavigationDrawerFragment mDrawerFragment;
+	private NavigationDrawerFragment mDrawerFragment;
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.city_weather_activity);
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.city_weather_activity);
 
-        ButterKnife.inject(this);
+		ButterKnife.inject(this);
 
-        setSupportActionBar(mAppBar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+		setSupportActionBar(mToolbar);
+		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        //Set up drawer
-        mDrawerFragment = (NavigationDrawerFragment)
-                getSupportFragmentManager().findFragmentById(R.id.navigation_drawer_fragment);
-        mDrawerFragment.setUp(R.id.navigation_drawer_fragment, mDrawerLayout, mAppBar);
+		//Set up drawer
+		mDrawerFragment = (NavigationDrawerFragment)
+				getSupportFragmentManager().findFragmentById(R.id.navigation_drawer_fragment);
+		mDrawerFragment.setUp(R.id.navigation_drawer_fragment, mDrawerLayout, mToolbar);
 
-    }
+	}
 
 }
