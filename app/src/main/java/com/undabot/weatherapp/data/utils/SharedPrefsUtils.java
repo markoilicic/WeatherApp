@@ -1,5 +1,9 @@
 package com.undabot.weatherapp.data.utils;
 
+import android.content.Context;
+import android.content.SharedPreferences;
+
+import com.undabot.weatherapp.App;
 import com.undabot.weatherapp.data.api.ApiConstants;
 
 import java.util.HashMap;
@@ -7,9 +11,22 @@ import java.util.Map;
 
 public class SharedPrefsUtils {
 
-    //TODO replace this values with real values from settings
+    private static SharedPreferences getSharedPreferences() {
+        Context context = App.getAppContext();
+        return context.getSharedPreferences(App.getAppContext().getPackageName(), Context.MODE_PRIVATE);
+    }
 
-    public Map<String, String> getWeatherOptions() {
+    public static void saveToPreferences(String preferenceName, String preferenceValue) {
+        getSharedPreferences().edit().putString(preferenceName, preferenceValue).apply();
+    }
+
+    public static String getFromPreferences(String preferenceName, String defaultValue){
+        return getSharedPreferences().getString(preferenceName, defaultValue);
+    }
+
+
+    //TODO replace this values with real values from settings
+    public Map<String, String> getWeatherOptions () {
         Map<String, String> options = new HashMap<>();
 
         options.put(ApiConstants.PARAM_UNIT, ApiConstants.VALUE_UNIT_METRIC);

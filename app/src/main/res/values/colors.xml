@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- Primary colors -->
+    <color name="primary">#2196F3</color>
+    <color name="primary_dark">#1976D2</color>
+    <color name="primary_light">#BBDEFB</color>
+    <color name="accent">#FF5722</color>
+    <color name="primary_text">#212121</color>
+    <color name="secondary_text">#727272</color>
+    <color name="icons">#FFFFFF</color>
+    <color name="divider">#B6B6B6</color>
+
+    <!-- FLoating button colors -->
+    <color name="floatting_btn_normal">#FF5722</color>
+    <color name="floatting_btn_pressed">#FF9922</color>
+
+    <!-- Drawer -->
+    <color name="drawer_background">#CCC</color>
+    <color name="drawer_header_text">#FFF</color>
+    <color name="drawer_header_background">#FF5722</color>
+
+</resources>

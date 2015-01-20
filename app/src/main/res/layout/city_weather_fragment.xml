@@ -49,6 +49,7 @@
                 android:textSize="30sp"
                 android:textAppearance="?android:attr/textAppearanceLarge"
                 android:text="@string/sample_temp_unit"
+                android:textColor="@color/secondary_text"
                 android:id="@+id/tv_temp_unit"/>
 
             <LinearLayout
@@ -67,43 +68,24 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textAppearance="?android:attr/textAppearanceSmall"
-                        android:text="@string/label_min_temp"
-                        />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
                         android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:textColor="@color/primary_text"
                         android:text="@string/sample_temp_value"
                         android:id="@+id/tv_min_temp"
-                        android:layout_marginLeft="@dimen/general_text_spacing"
-                        />
+                        android:layout_marginLeft="@dimen/general_text_spacing"/>
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textAppearance="?android:attr/textAppearanceMedium"
-                        android:text="@string/sample_temp_unit"
+                        android:text="@string/tilda"
                         android:id="@+id/tv_min_temp_unit"/>
-                </LinearLayout>
-
-                <LinearLayout
-                    android:orientation="horizontal"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="right">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textAppearance="?android:attr/textAppearanceSmall"
-                        android:text="@string/label_max_temp"/>
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:textColor="@color/primary_text"
                         android:text="@string/sample_temp_value"
                         android:id="@+id/tv_max_temp"
                         android:layout_marginLeft="@dimen/general_text_spacing"/>
@@ -142,8 +124,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceSmall"
-                    android:text="@string/label_wind"
-                    />
+                    android:text="@string/label_wind"/>
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -167,9 +148,8 @@
     </LinearLayout>
 
     <ListView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
         android:id="@+id/lv_city_days"
-        />
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
 
 </LinearLayout>
