@@ -18,20 +18,17 @@
         <fragment
             android:id="@+id/city_weather_content"
             android:name="com.undabot.weatherapp.ui.CityWeatherFragment"
-
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:layout="@layout/city_weather_fragment"
             tools:layout="@layout/city_weather_fragment" />
 
-        <fragment
-            android:id="@+id/navigation_drawer_fragment"
-            android:name="com.undabot.weatherapp.ui.NavigationDrawerFragment"
+        <include
+            android:id="@+id/drawer_fragment"
+            layout="@layout/drawer_fragment"
             android:layout_width="@dimen/drawer_width"
             android:layout_height="match_parent"
-            android:layout_gravity="start"
-            app:layout="@layout/drawer_fragment"
-            tools:layout="@layout/drawer_fragment" />
+            android:layout_gravity="start" />
 
     </android.support.v4.widget.DrawerLayout>
 
