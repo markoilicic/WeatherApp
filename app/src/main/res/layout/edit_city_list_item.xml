@@ -24,5 +24,6 @@
         android:layout_centerVertical="true"
         android:layout_marginRight="@dimen/general_padding"
         android:background="@android:color/transparent"
-        android:src="@android:drawable/ic_menu_delete" />
+        android:src="@android:drawable/ic_menu_delete"
+        android:onClick="onDelete"/>
 </RelativeLayout>

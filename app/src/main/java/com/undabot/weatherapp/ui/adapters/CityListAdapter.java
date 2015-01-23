@@ -16,8 +16,6 @@ import java.util.List;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
-import rx.android.observables.ViewObservable;
-import rx.functions.Action1;
 
 public class CityListAdapter extends ArrayAdapter<String> {
 
@@ -43,10 +41,10 @@ public class CityListAdapter extends ArrayAdapter<String> {
 
 		holder.cityName.setText(mCityList.get(position));
 
-		ViewObservable.clicks(holder.btnDelete, false).subscribe(new Action1<ImageButton>() {
+		holder.btnDelete.setOnClickListener(new View.OnClickListener() {
 			@Override
-			public void call(ImageButton imageButton) {
-				mCityList.remove(holder.cityName.getText());
+			public void onClick(View v) {
+				mCityList.remove(position);
 				SharedPrefsUtils.setCityList(mCityList);
 				notifyDataSetChanged();
 			}

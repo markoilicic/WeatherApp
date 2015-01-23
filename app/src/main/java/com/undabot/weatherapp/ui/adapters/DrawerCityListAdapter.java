@@ -19,6 +19,7 @@ import butterknife.InjectView;
 public class DrawerCityListAdapter extends ArrayAdapter<String> {
     private Context mContext;
     private List<String> mCityList;
+	private int mSelectedItem;
 
     public DrawerCityListAdapter(Context context, ArrayList<String> cityList) {
         super(context, R.layout.drawer_city_list_item, cityList);
@@ -37,12 +38,25 @@ public class DrawerCityListAdapter extends ArrayAdapter<String> {
             holder = (ViewHolder) convertView.getTag();
         }
 
+		if(mSelectedItem == position){
+			convertView.setBackgroundColor(mContext.getResources().getColor(R.color.drawer_selected_item));
+		}
+
         holder.cityName.setText(mCityList.get(position));
         return convertView;
     }
 
+	public void setSelectedItem(int position){
+		mSelectedItem = position;
+	}
+
+	public int getmSelectedItem(){
+		return mSelectedItem;
+	}
+
     static class ViewHolder {
         @InjectView(R.id.tv_city_name_list_item)
+
         TextView cityName;
 
         public ViewHolder(View view) {

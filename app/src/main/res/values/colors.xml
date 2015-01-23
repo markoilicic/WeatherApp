@@ -12,6 +12,7 @@
     <color name="divider">#B6B6B6</color>
     <color name="white">#FFF</color>
     <color name="black">#000</color>
+    <color name="warning">#F50</color>
 
     <!-- FLoating button colors -->
     <color name="floating_btn_normal">#FF5722</color>
@@ -22,5 +23,6 @@
     <color name="drawer_header_text">#FFF</color>
     <color name="drawer_header_background">#FF5722</color>
     <color name="drawer_list_circle">#B6B6B6</color>
+    <color name="drawer_selected_item">#EEE</color>
 
 </resources>

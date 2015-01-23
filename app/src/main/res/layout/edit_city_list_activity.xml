@@ -1,7 +1,8 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
+    android:id="@+id/rl_root_container"
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:fab="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/rl_root_container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
@@ -29,6 +30,7 @@
         fab:fab_colorNormal="@color/floating_btn_normal"
         fab:fab_colorPressed="@color/floating_btn_pressed"
         fab:fab_icon="@android:drawable/ic_input_add"
-        fab:fab_plusIconColor="@color/white" />
+        fab:fab_plusIconColor="@color/white"
+        android:onClick="onAddCityClick"/>
 
 </RelativeLayout>

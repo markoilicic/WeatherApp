@@ -7,10 +7,11 @@ import android.support.v4.app.Fragment;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.undabot.weatherapp.R;
@@ -21,12 +22,12 @@ import java.util.ArrayList;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
+import butterknife.OnClick;
 
 public class NavigationDrawerFragment extends Fragment {
 
 	public static final String KEY_USER_LEARNED_DRAWER = "user_learned_drawer";
 
-	@InjectView(R.id.btn_drawer_edit_city_list) ImageButton btnEditCityList;
 	@InjectView(R.id.lv_drawer_city_list) ListView lvDrawerCityList;
 
 	private ActionBarDrawerToggle mDrawerToggle;
@@ -65,6 +66,13 @@ public class NavigationDrawerFragment extends Fragment {
 		ButterKnife.inject(this, view);
 
 		lvDrawerCityList.setAdapter(adapter);
+		lvDrawerCityList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+			@Override
+			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+				adapter.setSelectedItem(position);
+				mDrawerLayout.closeDrawer(Gravity.LEFT);
+			}
+		});
 		return view;
 	}
 
@@ -112,21 +120,13 @@ public class NavigationDrawerFragment extends Fragment {
 		}
 
 		mDrawerLayout.setDrawerListener(mDrawerToggle);
-		//Sync the state of toolbar icon
-		mDrawerLayout.post(new Runnable() {
-			@Override
-			public void run() {
-				mDrawerToggle.syncState();
-			}
-		});
+		mDrawerToggle.syncState();
 
-		btnEditCityList.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				startActivity(new Intent(getActivity(), EditCityListActivity.class));
-			}
-		});
+	}
 
+	@OnClick(R.id.btn_drawer_edit_city_list)
+	public void onEditCityListClick() {
+		startActivity(new Intent(getActivity(), EditCityListActivity.class));
 	}
 
 }
