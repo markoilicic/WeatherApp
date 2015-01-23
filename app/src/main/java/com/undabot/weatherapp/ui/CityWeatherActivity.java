@@ -37,6 +37,9 @@ public class CityWeatherActivity extends ActionBarActivity {
 
 	private ArrayList<String> mCityList;
 	private DrawerCityListAdapter adapter;
+	private String mSelectedCity;
+
+	private CityWeatherFragment mCityWeatherFragment;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -48,11 +51,31 @@ public class CityWeatherActivity extends ActionBarActivity {
 		setSupportActionBar(mToolbar);
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-		//Set up drawer
+		//Get shared prefs
 		mIsUserLearnedDrawer = Boolean.valueOf(SharedPrefsUtils.getFromPreferences(KEY_USER_LEARNED_DRAWER, "false"));
+		mSelectedCity = SharedPrefsUtils.getSelectedCity();
 		mCityList = (ArrayList<String>) SharedPrefsUtils.getCityList();
-		adapter = new DrawerCityListAdapter(this, mCityList);
 
+		mCityWeatherFragment = (CityWeatherFragment) getSupportFragmentManager().findFragmentById(R.id.city_weather_fragment);
+
+		setupDrawer();
+
+	}
+
+	@Override
+	protected void onPostCreate(Bundle savedInstanceState) {
+		super.onPostCreate(savedInstanceState);
+		mDrawerToggle.syncState();
+	}
+
+	@Override
+	public void onConfigurationChanged(Configuration newConfig) {
+		super.onConfigurationChanged(newConfig);
+		mDrawerToggle.syncState();
+	}
+
+	private void setupDrawer() {
+		adapter = new DrawerCityListAdapter(this, mCityList);
 		mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, mToolbar, R.string.drawer_open, R.string.drawer_close) {
 
 			@Override
@@ -75,36 +98,24 @@ public class CityWeatherActivity extends ActionBarActivity {
 				}
 			}
 		};
-
 		mDrawerLayout.setDrawerListener(mDrawerToggle);
-
+		setDrawerList();
 		//Show drawer if user never seen it
 		if (!mIsUserLearnedDrawer) {
 			mDrawerLayout.openDrawer(mDrawerView);
 		}
-		setDrawerList();
 	}
-
-	@Override
-	protected void onPostCreate(Bundle savedInstanceState) {
-		super.onPostCreate(savedInstanceState);
-		mDrawerToggle.syncState();
-	}
-
-	@Override
-	public void onConfigurationChanged(Configuration newConfig) {
-		super.onConfigurationChanged(newConfig);
-		mDrawerToggle.syncState();
-	}
-
 
 	public void setDrawerList() {
 		lvDrawerCityList.setAdapter(adapter);
 		lvDrawerCityList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-				adapter.setSelectedItem(position);
+				mSelectedCity = mCityList.get(position);
+				SharedPrefsUtils.setSelectedCity(mCityList.get(position));
+				adapter.notifyDataSetChanged();
 				mDrawerLayout.closeDrawer(Gravity.LEFT);
+				mCityWeatherFragment.onRefresh();
 			}
 		});
 

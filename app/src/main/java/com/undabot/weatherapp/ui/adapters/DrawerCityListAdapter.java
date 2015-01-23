@@ -17,50 +17,51 @@ import butterknife.ButterKnife;
 import butterknife.InjectView;
 
 public class DrawerCityListAdapter extends ArrayAdapter<String> {
-    private Context mContext;
-    private List<String> mCityList;
-	private int mSelectedItem;
+	private Context mContext;
+	private List<String> mCityList;
+	private String mSelectedCity;
 
-    public DrawerCityListAdapter(Context context, ArrayList<String> cityList) {
-        super(context, R.layout.drawer_city_list_item, cityList);
-        this.mContext = context;
-        this.mCityList = SharedPrefsUtils.getCityList();
-    }
+	public DrawerCityListAdapter(Context context, ArrayList<String> cityList) {
+		super(context, R.layout.drawer_city_list_item, cityList);
+		this.mContext = context;
+		this.mCityList = SharedPrefsUtils.getCityList();
+		this.mSelectedCity = SharedPrefsUtils.getSelectedCity();
+	}
 
-    @Override
-    public View getView(final int position, View convertView, ViewGroup parent) {
-        final ViewHolder holder;
-        if (convertView == null) {
-            convertView = LayoutInflater.from(mContext).inflate(R.layout.drawer_city_list_item, null);
-            holder = new ViewHolder(convertView);
-            convertView.setTag(holder);
-        } else {
-            holder = (ViewHolder) convertView.getTag();
-        }
+	@Override
+	public View getView(final int position, View convertView, ViewGroup parent) {
+		final ViewHolder holder;
 
-		if(mSelectedItem == position){
-			convertView.setBackgroundColor(mContext.getResources().getColor(R.color.drawer_selected_item));
+		if (convertView == null) {
+			convertView = LayoutInflater.from(mContext).inflate(R.layout.drawer_city_list_item, null);
+			holder = new ViewHolder(convertView);
+			convertView.setTag(holder);
+		} else {
+			holder = (ViewHolder) convertView.getTag();
 		}
 
-        holder.cityName.setText(mCityList.get(position));
-        return convertView;
-    }
+		//Check if item is selected and set custom background color
+		if (mSelectedCity.equals(mCityList.get(position))) {
+			convertView.setBackgroundResource(R.color.drawer_selected_item);
+		} else {
+			convertView.setBackgroundResource(R.color.white);
+		}
 
-	public void setSelectedItem(int position){
-		mSelectedItem = position;
+		holder.cityName.setText(mCityList.get(position));
+		return convertView;
 	}
 
-	public int getmSelectedItem(){
-		return mSelectedItem;
+	@Override
+	public void notifyDataSetChanged() {
+		super.notifyDataSetChanged();
+		this.mSelectedCity = SharedPrefsUtils.getSelectedCity();
 	}
 
-    static class ViewHolder {
-        @InjectView(R.id.tv_city_name_list_item)
+	static class ViewHolder {
+		@InjectView(R.id.tv_city_name_list_item) TextView cityName;
 
-        TextView cityName;
-
-        public ViewHolder(View view) {
-            ButterKnife.inject(this, view);
-        }
-    }
+		public ViewHolder(View view) {
+			ButterKnife.inject(this, view);
+		}
+	}
 }

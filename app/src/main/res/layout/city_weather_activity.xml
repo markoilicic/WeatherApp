@@ -16,7 +16,7 @@
         android:layout_height="match_parent">
 
         <fragment
-            android:id="@+id/city_weather_content"
+            android:id="@+id/city_weather_fragment"
             android:name="com.undabot.weatherapp.ui.CityWeatherFragment"
             android:layout_width="match_parent"
             android:layout_height="match_parent"

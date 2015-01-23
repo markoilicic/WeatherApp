@@ -47,7 +47,9 @@ public class EditCityListActivity extends ActionBarActivity {
 
 	}
 
-	//Create and show dialog for adding new city
+	/**
+	 * Creates and shows dialog for adding new city
+	 */
 	private void showAddNewCityDialog() {
 		//Get custom view for dialog
 		View dialogView = getLayoutInflater().inflate(R.layout.add_new_city_dialog, null);
