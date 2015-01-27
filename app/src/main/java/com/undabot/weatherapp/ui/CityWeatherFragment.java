@@ -33,16 +33,17 @@ public class CityWeatherFragment extends Fragment implements SwipeRefreshLayout.
 
 	@InjectView(R.id.swipe_refresh_layout) SwipeRefreshLayout swipeRefreshLayout;
 	@InjectView(R.id.city_weather_container) View cityWeatherContainer;
-	@InjectView(R.id.city_header_container) View cityHeaderContainer;
+	@InjectView(R.id.error_layout) View errorLayout;
 
 	@InjectView(R.id.tv_city_name) TextView tvCityName;
 	@InjectView(R.id.tv_weather_description) TextView tvWeatherDescription;
 	@InjectView(R.id.tv_temperature) TextView tvTemperature;
 	@InjectView(R.id.tv_temp_unit) TextView tvTempUnit;
 	@InjectView(R.id.tv_temp_range_value) TextView tvTempRange;
-	@InjectView(R.id.tv_temp_range_unit) TextView tvTempRangeUnit;
 	@InjectView(R.id.tv_wind_speed) TextView tvWindSpeed;
+	@InjectView(R.id.tv_error_message) TextView tvErrorMsg;
 	@InjectView(R.id.iv_weather_icon) ImageView ivWeatherIcon;
+	@InjectView(R.id.iv_wind_direction) ImageView ivWindDirection;
 
 	@InjectView(R.id.lv_forecast_weather) ListView lvForecastWeather;
 
@@ -59,7 +60,6 @@ public class CityWeatherFragment extends Fragment implements SwipeRefreshLayout.
 		ButterKnife.inject(this, view);
 
 		mApiService = new ApiServiceManager().getApiService();
-		mCity = SharedPrefsUtils.getSelectedCity();
 
 		swipeRefreshLayout.setColorSchemeResources(R.color.primary, R.color.primary_dark, R.color.accent);
 		swipeRefreshLayout.setOnRefreshListener(this);
@@ -71,11 +71,31 @@ public class CityWeatherFragment extends Fragment implements SwipeRefreshLayout.
 
 	@Override
 	public void onRefresh() {
-		swipeRefreshLayout.setRefreshing(true);
+		setOnRefreshStartViews();
 		mCity = SharedPrefsUtils.getSelectedCity();
 		requestWeatherData();
 	}
 
+	public void setOnRefreshStartViews() {
+		swipeRefreshLayout.setRefreshing(true);
+		cityWeatherContainer.setAlpha(0.5f);
+		errorLayout.setVisibility(View.GONE);
+	}
+
+	public void setOnRefreshSucessViews() {
+		swipeRefreshLayout.setRefreshing(false);
+		cityWeatherContainer.setAlpha(1f);
+		cityWeatherContainer.setVisibility(View.VISIBLE);
+		errorLayout.setVisibility(View.GONE);
+	}
+
+	public void setOnRefreshErrorViews(String errorMsg) {
+		swipeRefreshLayout.setRefreshing(false);
+		cityWeatherContainer.setVisibility(View.GONE);
+		//Set error text
+		tvErrorMsg.setText(errorMsg);
+		errorLayout.setVisibility(View.VISIBLE);
+	}
 
 	public void requestWeatherData() {
 
@@ -93,14 +113,13 @@ public class CityWeatherFragment extends Fragment implements SwipeRefreshLayout.
 				.subscribe(new Subscriber<Object>() {
 					@Override
 					public void onCompleted() {
-						setCurrentWeather();
-						swipeRefreshLayout.setRefreshing(false);
+						setCityWeather();
 					}
 
 					@Override
 					public void onError(Throwable e) {
-						Timber.e("Error on ");
-						swipeRefreshLayout.setRefreshing(false);
+						Timber.e("RequestWeatherData onError: " + e.getMessage());
+						setOnRefreshErrorViews(e.getMessage());
 					}
 
 					@Override
@@ -111,12 +130,29 @@ public class CityWeatherFragment extends Fragment implements SwipeRefreshLayout.
 
 	}
 
-	private void setCurrentWeather() {
-		tvCityName.setText(mCurrentWeather.getCityName());
-		tvTemperature.setText(String.valueOf(mCurrentWeather.getMainConditions().getTemperature()));
-		tvTempUnit.setText("°C");
-		tvWeatherDescription.setText(mCurrentWeather.getWeatherList().get(0).getDescription());
-		Picasso.with(getActivity()).load(mCurrentWeather.getIconUrl()).into(ivWeatherIcon);
+	private void setCityWeather() {
+		//If responseCode != 200, there is some error message returned from server
+		if (mCurrentWeather.getResponseCode() != 200) {
+			setOnRefreshErrorViews(mCurrentWeather.getErrorMsg());
+			Timber.d("OnRefresh error: " + mCurrentWeather.getErrorMsg());
+		} else {
+			//Current weather
+			if (mCurrentWeather.getCityName().isEmpty()) {
+				tvCityName.setText(mCurrentWeather.getSysMsg().getCountry());
+			} else {
+				tvCityName.setText(mCurrentWeather.getCityName());
+			}
+			tvTemperature.setText(mCurrentWeather.getMainConditions().getFormatedTemp());
+			tvTempUnit.setText("°C");
+			tvWeatherDescription.setText(mCurrentWeather.getWeatherList().get(0).getDescription());
+			tvTempRange.setText(mCurrentWeather.getMainConditions().getFormatedTempRange());
+			tvWindSpeed.setText(mCurrentWeather.getWind().getSpeed() + "m/s");
+
+			Picasso.with(getActivity()).load(mCurrentWeather.getIconUrl()).into(ivWeatherIcon);
+			ivWindDirection.setRotation(mCurrentWeather.getWind().getDegrees());
+
+			setOnRefreshSucessViews();
+		}
 	}
 
 }

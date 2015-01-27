@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import com.undabot.weatherapp.R;
 import com.undabot.weatherapp.data.utils.SharedPrefsUtils;
+import com.undabot.weatherapp.data.utils.TextFormatUtils;
 import com.undabot.weatherapp.ui.adapters.CityListAdapter;
 
 import java.util.ArrayList;
@@ -56,15 +57,13 @@ public class EditCityListActivity extends ActionBarActivity {
 		final EditText input = (EditText) dialogView.findViewById(R.id.et_input);
 		final TextView tvWarningMsg = (TextView) dialogView.findViewById(R.id.tv_warning_message);
 
-		input.setHint(getResources().getString(R.string.add_city_dialog_hint));
-
 		//Create alert dialog
 		final AlertDialog dialog = new AlertDialog.Builder(this)
 				.setTitle(R.string.add_city_dialog_title)
 				.setView(dialogView)
 				.setPositiveButton(R.string.text_ok, new DialogInterface.OnClickListener() {
 					public void onClick(DialogInterface dialog, int whichButton) {
-						mCityList.add(input.getText().toString());
+						mCityList.add(TextFormatUtils.capitalizeFirstLetterInEachWord(input.getText().toString()));
 						SharedPrefsUtils.setCityList(mCityList);
 						cityListAdapter.notifyDataSetChanged();
 					}
@@ -84,7 +83,7 @@ public class EditCityListActivity extends ActionBarActivity {
 
 			@Override
 			public void call(Object o) {
-				inputText = input.getText().toString();
+				inputText = TextFormatUtils.capitalizeFirstLetterInEachWord(input.getText().toString());
 				//Check if city is already in list or length<3 and disable OK button
 				if (mCityList.contains(inputText)) {
 					dialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(false);

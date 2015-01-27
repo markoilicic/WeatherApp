@@ -10,7 +10,8 @@
         android:id="@+id/et_input"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        tools:hint="Type city name..." />
+        android:hint="@string/add_city_dialog_hint"
+        android:maxLines="1" />
 
     <TextView
         android:id="@+id/tv_warning_message"

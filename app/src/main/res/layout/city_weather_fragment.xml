@@ -13,107 +13,147 @@
         android:layout_height="match_parent">
 
         <LinearLayout
-            android:id="@+id/city_weather_container"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
 
-            <RelativeLayout
-                android:id="@+id/city_header_container"
-                android:layout_width="match_parent"
-                android:layout_height="200dp"
-                android:layout_gravity="center_horizontal"
-                android:orientation="vertical">
-
-                <TextView
-                    android:id="@+id/tv_city_name"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentLeft="true"
-                    android:layout_alignParentTop="true"
-                    android:textSize="26sp"
-                    tools:text="City name" />
-
-                <ImageView
-                    android:id="@+id/iv_weather_icon"
-                    android:layout_width="80dp"
-                    android:layout_height="80dp"
-                    android:layout_alignParentLeft="true"
-                    android:layout_centerVertical="true"
-                    android:layout_margin="@dimen/general_spacing"
-                    tools:ignore="ContentDescription" />
-
-                <TextView
-                    android:id="@+id/tv_temperature"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_toEndOf="@+id/iv_weather_icon"
-                    android:layout_toRightOf="@+id/iv_weather_icon"
-                    android:textAppearance="?android:attr/textAppearanceLarge"
-                    android:textSize="40sp"
-                    tools:text="8,9" />
-
-                <TextView
-                    android:id="@+id/tv_temp_unit"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_toEndOf="@+id/tv_temperature"
-                    android:layout_toRightOf="@+id/tv_temperature"
-                    android:textAppearance="?android:attr/textAppearanceLarge"
-                    android:textColor="@color/secondary_text"
-                    android:textSize="30sp"
-                    tools:text="°C" />
-
-                <TextView
-                    android:id="@+id/tv_temp_range_value"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_toLeftOf="@+id/tv_temp_range_unit"
-                    android:layout_toStartOf="@+id/tv_temp_range_unit"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:textColor="@color/primary_text"
-                    tools:text="8,5 ~ 12" />
-
-                <TextView
-                    android:id="@+id/tv_temp_range_unit"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:layout_alignParentRight="true"
-                    android:layout_centerVertical="true"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
-                    tools:text="°C" />
-
-                <TextView
-                    android:id="@+id/tv_weather_description"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentBottom="true"
-                    android:layout_alignParentLeft="true"
-                    android:layout_alignParentStart="true"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
-                    tools:text="Light rain" />
-
-                <TextView
-                    android:id="@+id/tv_wind_speed"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentBottom="true"
-                    android:layout_alignParentEnd="true"
-                    android:layout_alignParentRight="true"
-                    android:layout_gravity="bottom"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
-                    tools:text="15 m/s" />
-            </RelativeLayout>
-
-            <ListView
-                android:id="@+id/lv_forecast_weather"
+            <LinearLayout
+                android:id="@+id/city_weather_container"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginTop="@dimen/general_padding" />
+                android:orientation="vertical"
+                android:visibility="gone"
+                tools:visibility="visible">
+
+                <RelativeLayout
+                    android:id="@+id/city_header_container"
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp"
+                    android:layout_gravity="center_horizontal"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/tv_city_name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentTop="true"
+                        android:textColor="@color/accent"
+                        android:textSize="26sp"
+                        tools:text="City name" />
+
+                    <ImageView
+                        android:id="@+id/iv_weather_icon"
+                        android:layout_width="80dp"
+                        android:layout_height="80dp"
+                        android:layout_alignParentLeft="true"
+                        android:layout_centerVertical="true"
+                        android:layout_margin="@dimen/general_spacing"
+                        tools:ignore="ContentDescription" />
+
+                    <TextView
+                        android:id="@+id/tv_temperature"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="@dimen/general_spacing"
+                        android:layout_toEndOf="@+id/iv_weather_icon"
+                        android:layout_toRightOf="@+id/iv_weather_icon"
+                        android:textAppearance="?android:attr/textAppearanceLarge"
+                        android:textColor="@color/primary_dark"
+                        android:textSize="40sp"
+                        tools:text="8,9" />
+
+                    <TextView
+                        android:id="@+id/tv_temp_unit"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_toEndOf="@+id/tv_temperature"
+                        android:layout_toRightOf="@+id/tv_temperature"
+                        android:textAppearance="?android:attr/textAppearanceLarge"
+                        android:textColor="@color/primary"
+                        android:textSize="30sp"
+                        tools:text="°C" />
+
+                    <TextView
+                        android:id="@+id/tv_temp_range_value"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:textColor="@color/primary"
+                        tools:text="8,5°/12°" />
+
+                    <TextView
+                        android:id="@+id/tv_weather_description"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentBottom="true"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentStart="true"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:textColor="@color/primary"
+                        tools:text="Light rain" />
+
+                    <ImageView
+                        android:id="@+id/iv_wind_direction"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_alignParentBottom="true"
+                        android:layout_toLeftOf="@+id/tv_wind_speed"
+                        android:layout_toStartOf="@+id/tv_wind_speed"
+                        android:src="@android:drawable/arrow_down_float"
+                        android:tint="@color/primary_dark" />
+
+                    <TextView
+                        android:id="@+id/tv_wind_speed"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentBottom="true"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_gravity="bottom"
+                        android:layout_marginLeft="@dimen/general_spacing"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:textColor="@color/primary"
+                        tools:text="15 m/s" />
+                </RelativeLayout>
+
+                <ListView
+                    android:id="@+id/lv_forecast_weather"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="@dimen/general_padding" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/error_layout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@android:drawable/stat_sys_warning"
+                    android:tint="@color/accent" />
+
+                <TextView
+                    android:id="@+id/tv_error_message"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:textColor="@color/primary"
+                    android:textSize="@dimen/error_message_txt"
+                    tools:text="City not found!" />
+
+            </LinearLayout>
 
         </LinearLayout>
 

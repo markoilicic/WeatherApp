@@ -18,6 +18,8 @@ public class CurrentWeatherResponse {
 	@SerializedName("id") private long cityId;
 	@SerializedName("name") private String cityName;
 	@SerializedName("cod") private int responseCode;
+	@SerializedName("message") private String errorMsg;
+
 
 	public CurrentWeatherResponse() {
 		this.coordinates = new Coordinates();
@@ -29,6 +31,7 @@ public class CurrentWeatherResponse {
 		this.cityId = (long) -1;
 		this.cityName = "";
 		this.responseCode = -1;
+		this.errorMsg = "";
 	}
 
 	public Coordinates getCoordinates() {
@@ -101,6 +104,14 @@ public class CurrentWeatherResponse {
 
 	public void setResponseCode(int responseCode) {
 		this.responseCode = responseCode;
+	}
+
+	public String getErrorMsg() {
+		return errorMsg;
+	}
+
+	public void setErrorMsg(String errorMsg) {
+		this.errorMsg = errorMsg;
 	}
 
 	public String getIconUrl() {
