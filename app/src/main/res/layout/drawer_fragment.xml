@@ -1,26 +1,27 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              xmlns:tools="http://schemas.android.com/tools"
-              android:orientation="vertical"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:background="@color/drawer_background"
-              tools:context="com.undabot.weatherapp.ui.NavigationDrawerFragment">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/drawer_background"
+    android:orientation="vertical"
+    tools:context="com.undabot.weatherapp.ui.NavigationDrawerFragment">
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="60dp"
+        android:background="@color/accent"
         android:padding="@dimen/general_padding"
-        android:background="@color/accent">
+        android:layout_marginBottom="@dimen/general_spacing">
 
         <TextView
             android:id="@+id/drawer_header_label"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/drawer_header_label"
             android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"
-            android:textSize="18sp"
-            android:textColor="@android:color/white"/>
+            android:text="@string/drawer_header_label"
+            android:textColor="@android:color/white"
+            android:textSize="18sp" />
 
         <ImageButton
             android:id="@+id/btn_drawer_edit_city_list"
@@ -28,16 +29,18 @@
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
+            android:background="@android:color/transparent"
             android:src="@android:drawable/ic_menu_edit"
-            android:background="@android:color/transparent"/>
+            android:onClick="onEditCityListClick"/>
 
     </RelativeLayout>
-    
+
     <ListView
         android:id="@+id/lv_drawer_city_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        />
+        android:divider="@null"
+        android:dividerHeight="0dp"/>
 
 </LinearLayout>
 
