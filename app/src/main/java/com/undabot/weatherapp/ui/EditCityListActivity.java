@@ -67,11 +67,7 @@ public class EditCityListActivity extends ActionBarActivity {
 						SharedPrefsUtils.setCityList(mCityList);
 						cityListAdapter.notifyDataSetChanged();
 					}
-				}).setNegativeButton(R.string.text_cancel, new DialogInterface.OnClickListener() {
-					public void onClick(DialogInterface dialog, int whichButton) {
-						//Dismiss
-					}
-				}).show();
+				}).setNegativeButton(R.string.text_cancel, null).show();
 
 		//Disable positive button at start
 		dialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(false);
