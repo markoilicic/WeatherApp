@@ -12,10 +12,10 @@ import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 import com.undabot.weatherapp.R;
-import com.undabot.weatherapp.data.api.ApiService;
 import com.undabot.weatherapp.data.api.ApiServiceManager;
-import com.undabot.weatherapp.data.model.CurrentWeatherResponse;
-import com.undabot.weatherapp.data.model.ForecastWeatherResponse;
+import com.undabot.weatherapp.data.api.OpenWeatherService;
+import com.undabot.weatherapp.data.model.OpenWeatherApi.CurrentWeatherResponse;
+import com.undabot.weatherapp.data.model.OpenWeatherApi.ForecastWeatherResponse;
 import com.undabot.weatherapp.data.utils.SharedPrefsUtils;
 
 import butterknife.ButterKnife;
@@ -51,7 +51,7 @@ public class CityWeatherFragment extends Fragment implements SwipeRefreshLayout.
 	private CurrentWeatherResponse mCurrentWeather;
 	private ForecastWeatherResponse mForecastWeather;
 
-	private ApiService mApiService;
+	private OpenWeatherService mOpenWeatherService;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -59,7 +59,7 @@ public class CityWeatherFragment extends Fragment implements SwipeRefreshLayout.
 
 		ButterKnife.inject(this, view);
 
-		mApiService = new ApiServiceManager().getApiService();
+		mOpenWeatherService = new ApiServiceManager().getApiService();
 
 		swipeRefreshLayout.setColorSchemeResources(R.color.primary, R.color.primary_dark, R.color.accent);
 		swipeRefreshLayout.setOnRefreshListener(this);
@@ -99,8 +99,8 @@ public class CityWeatherFragment extends Fragment implements SwipeRefreshLayout.
 
 	public void requestWeatherData() {
 
-		Observable.zip(mApiService.getCurrentWeather(SharedPrefsUtils.getWeatherOptions(), mCity),
-				mApiService.getForecastWeather(SharedPrefsUtils.getForecastWeatherOptions(), mCity),
+		Observable.zip(mOpenWeatherService.getCurrentWeather(SharedPrefsUtils.getWeatherOptions(), mCity),
+				mOpenWeatherService.getForecastWeather(SharedPrefsUtils.getForecastWeatherOptions(), mCity),
 				new Func2<CurrentWeatherResponse, ForecastWeatherResponse, Object>() {
 					@Override
 					public Object call(CurrentWeatherResponse currentWeatherResponse, ForecastWeatherResponse forecastWeatherResponse) {

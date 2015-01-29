@@ -5,8 +5,9 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
-import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -14,15 +15,14 @@ import com.undabot.weatherapp.R;
 import com.undabot.weatherapp.data.utils.SharedPrefsUtils;
 import com.undabot.weatherapp.data.utils.TextFormatUtils;
 import com.undabot.weatherapp.ui.adapters.CityListAdapter;
+import com.undabot.weatherapp.ui.adapters.PlacesPredictionAdapter;
+import com.undabot.weatherapp.ui.custom.DelayAutoCompleteTextView;
 
 import java.util.ArrayList;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
-import rx.Observable;
-import rx.android.observables.ViewObservable;
-import rx.functions.Action1;
 
 public class EditCityListActivity extends ActionBarActivity {
 
@@ -54,8 +54,11 @@ public class EditCityListActivity extends ActionBarActivity {
 	private void showAddNewCityDialog() {
 		//Get custom view for dialog
 		View dialogView = getLayoutInflater().inflate(R.layout.add_new_city_dialog, null);
-		final EditText input = (EditText) dialogView.findViewById(R.id.et_input);
+		final DelayAutoCompleteTextView input = (DelayAutoCompleteTextView) dialogView.findViewById(R.id.et_input);
 		final TextView tvWarningMsg = (TextView) dialogView.findViewById(R.id.tv_warning_message);
+
+		//Add adapter for places prediction
+		input.setAdapter(new PlacesPredictionAdapter(this));
 
 		//Create alert dialog
 		final AlertDialog dialog = new AlertDialog.Builder(this)
@@ -72,26 +75,35 @@ public class EditCityListActivity extends ActionBarActivity {
 		//Disable positive button at start
 		dialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(false);
 
-		//Create text input observable
-		Observable inputObservable = ViewObservable.input(input, false);
-		inputObservable.subscribe(new Action1() {
+		//Create onTextChangeListener
+		input.addTextChangedListener(new TextWatcher() {
 			String inputText;
 
 			@Override
-			public void call(Object o) {
-				inputText = TextFormatUtils.capitalizeFirstLetterInEachWord(input.getText().toString());
+			public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+			}
+
+			@Override
+			public void onTextChanged(CharSequence s, int start, int before, int count) {
+			}
+
+			@Override
+			public void afterTextChanged(Editable s) {
+				inputText = TextFormatUtils.capitalizeFirstLetterInEachWord(s.toString());
 				//Check if city is already in list or length<3 and disable OK button
 				if (mCityList.contains(inputText)) {
 					dialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(false);
 					tvWarningMsg.setText(R.string.add_city_dialog_warning_in_list);
 				} else if (inputText.length() < 3) {
 					dialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(false);
+					tvWarningMsg.setText("");
 				} else {
 					dialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(true);
 					tvWarningMsg.setText("");
 				}
 			}
 		});
+
 	}
 
 	@OnClick(R.id.fab_add_city)

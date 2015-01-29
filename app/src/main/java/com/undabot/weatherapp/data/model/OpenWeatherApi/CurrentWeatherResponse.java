@@ -1,4 +1,4 @@
-package com.undabot.weatherapp.data.model;
+package com.undabot.weatherapp.data.model.OpenWeatherApi;
 
 
 import com.google.gson.annotations.SerializedName;
@@ -115,6 +115,6 @@ public class CurrentWeatherResponse {
 	}
 
 	public String getIconUrl() {
-		return ApiConstants.IMG_BASE_URL + weatherList.get(0).getIconName() + ".png";
+		return ApiConstants.OPEN_WEATHER_IMG_BASE_URL + weatherList.get(0).getIconName() + ".png";
 	}
 }

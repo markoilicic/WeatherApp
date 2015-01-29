@@ -40,6 +40,7 @@ public class DrawerCityListAdapter extends ArrayAdapter<String> {
 			holder = (ViewHolder) convertView.getTag();
 		}
 
+
 		//Check if item is selected and set custom background color
 		if (mSelectedCity.equals(mCityList.get(position))) {
 			convertView.setBackgroundResource(R.color.drawer_selected_item);

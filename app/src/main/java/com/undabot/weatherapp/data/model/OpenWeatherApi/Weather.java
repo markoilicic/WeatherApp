@@ -1,4 +1,4 @@
-package com.undabot.weatherapp.data.model;
+package com.undabot.weatherapp.data.model.OpenWeatherApi;
 
 import com.google.gson.annotations.SerializedName;
 import com.undabot.weatherapp.data.utils.TextFormatUtils;

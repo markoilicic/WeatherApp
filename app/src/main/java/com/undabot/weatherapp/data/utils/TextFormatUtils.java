@@ -6,7 +6,7 @@ public class TextFormatUtils {
 		if (original.length() == 0) {
 			return original;
 		}
-		return original.substring(0, 1).toUpperCase() + original.substring(1);
+		return original.substring(0, 1).toUpperCase() + original.substring(1).toLowerCase();
 	}
 
 	public static String capitalizeFirstLetterInEachWord(String original) {
@@ -23,7 +23,7 @@ public class TextFormatUtils {
 		StringBuilder formatted = new StringBuilder();
 		for (int i = 0; i < words.length; i++) {
 			formatted.append(Character.toUpperCase(words[i].charAt(0)));
-			formatted.append(words[i].substring(1));
+			formatted.append(words[i].substring(1).toLowerCase());
 			if (i < words.length - 1) {
 				formatted.append(' ');
 			}
