@@ -42,7 +42,7 @@ public class EditCityListActivity extends ActionBarActivity {
 		setSupportActionBar(toolbar);
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-		mCityList = (ArrayList<String>) SharedPrefsUtils.getCityList();
+		mCityList = SharedPrefsUtils.getCityList();
 		cityListAdapter = new CityListAdapter(getApplicationContext(), mCityList);
 		lvCityList.setAdapter(cityListAdapter);
 
@@ -88,8 +88,8 @@ public class EditCityListActivity extends ActionBarActivity {
 			}
 
 			@Override
-			public void afterTextChanged(Editable s) {
-				inputText = TextFormatUtils.capitalizeFirstLetterInEachWord(s.toString());
+			public void afterTextChanged(Editable input) {
+				inputText = TextFormatUtils.capitalizeFirstLetterInEachWord(input.toString());
 				//Check if city is already in list or length<3 and disable OK button
 				if (mCityList.contains(inputText)) {
 					dialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(false);

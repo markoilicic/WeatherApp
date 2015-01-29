@@ -1,6 +1,7 @@
 package com.undabot.weatherapp.ui;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
@@ -13,6 +14,8 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.undabot.weatherapp.R;
+import com.undabot.weatherapp.data.prefs.BooleanPreference;
+import com.undabot.weatherapp.data.prefs.StringPreference;
 import com.undabot.weatherapp.data.utils.SharedPrefsUtils;
 import com.undabot.weatherapp.ui.adapters.DrawerCityListAdapter;
 
@@ -33,11 +36,12 @@ public class CityWeatherActivity extends ActionBarActivity {
 
 	private ActionBarDrawerToggle mDrawerToggle;
 
-	private boolean mIsUserLearnedDrawer;
+	private SharedPreferences sharedPreferences;
+	private BooleanPreference mIsUserLearnedDrawer;
+	private StringPreference mSelectedCity;
 
 	private ArrayList<String> mCityList;
 	private DrawerCityListAdapter adapter;
-	private String mSelectedCity;
 
 	private CityWeatherFragment mCityWeatherFragment;
 
@@ -52,9 +56,10 @@ public class CityWeatherActivity extends ActionBarActivity {
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
 		//Get shared prefs
-		mIsUserLearnedDrawer = Boolean.valueOf(SharedPrefsUtils.getFromPreferences(KEY_USER_LEARNED_DRAWER, "false"));
-		mSelectedCity = SharedPrefsUtils.getSelectedCity();
-		mCityList = (ArrayList<String>) SharedPrefsUtils.getCityList();
+		sharedPreferences = SharedPrefsUtils.getSharedPreferences();
+		mIsUserLearnedDrawer = new BooleanPreference(sharedPreferences, KEY_USER_LEARNED_DRAWER, false);
+		mSelectedCity = new StringPreference(sharedPreferences, SharedPrefsUtils.KEY_SELECTED_CITY);
+		mCityList = SharedPrefsUtils.getCityList();
 
 		mCityWeatherFragment = (CityWeatherFragment) getSupportFragmentManager().findFragmentById(R.id.city_weather_fragment);
 
@@ -75,16 +80,15 @@ public class CityWeatherActivity extends ActionBarActivity {
 	}
 
 	private void setupDrawer() {
-		adapter = new DrawerCityListAdapter(this, mCityList);
+		adapter = new DrawerCityListAdapter(this, mCityList, mSelectedCity);
 		mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, mToolbar, R.string.drawer_open, R.string.drawer_close) {
 
 			@Override
 			public void onDrawerOpened(View drawerView) {
 				super.onDrawerOpened(drawerView);
 				//If user started for first time, set isUserLearnedDrawer = true so drawer doesn't opens in next start
-				if (!mIsUserLearnedDrawer) {
-					mIsUserLearnedDrawer = true;
-					SharedPrefsUtils.saveToPreferences(KEY_USER_LEARNED_DRAWER, "true");
+				if (!mIsUserLearnedDrawer.get()) {
+					mIsUserLearnedDrawer.set(true);
 				}
 				invalidateOptionsMenu();
 			}
@@ -101,7 +105,7 @@ public class CityWeatherActivity extends ActionBarActivity {
 		mDrawerLayout.setDrawerListener(mDrawerToggle);
 		setDrawerList();
 		//Show drawer if user never seen it
-		if (!mIsUserLearnedDrawer) {
+		if (!mIsUserLearnedDrawer.get()) {
 			mDrawerLayout.openDrawer(mDrawerView);
 		}
 	}
@@ -111,8 +115,7 @@ public class CityWeatherActivity extends ActionBarActivity {
 		lvDrawerCityList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-				mSelectedCity = mCityList.get(position);
-				SharedPrefsUtils.setSelectedCity(mCityList.get(position));
+				mSelectedCity.set(mCityList.get(position));
 				adapter.notifyDataSetChanged();
 				mDrawerLayout.closeDrawer(Gravity.LEFT);
 				mCityWeatherFragment.onRefresh();

@@ -12,7 +12,6 @@ import com.undabot.weatherapp.R;
 import com.undabot.weatherapp.data.utils.SharedPrefsUtils;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -20,7 +19,7 @@ import butterknife.InjectView;
 public class CityListAdapter extends ArrayAdapter<String> {
 
 	private Context mContext;
-	private List<String> mCityList;
+	private ArrayList<String> mCityList;
 
 	public CityListAdapter(Context context, ArrayList<String> cityList) {
 		super(context, R.layout.edit_city_list_item, cityList);

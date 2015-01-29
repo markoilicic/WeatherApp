@@ -16,6 +16,7 @@ import com.undabot.weatherapp.data.api.ApiServiceManager;
 import com.undabot.weatherapp.data.api.OpenWeatherService;
 import com.undabot.weatherapp.data.model.OpenWeatherApi.CurrentWeatherResponse;
 import com.undabot.weatherapp.data.model.OpenWeatherApi.ForecastWeatherResponse;
+import com.undabot.weatherapp.data.prefs.StringPreference;
 import com.undabot.weatherapp.data.utils.SharedPrefsUtils;
 
 import butterknife.ButterKnife;
@@ -47,11 +48,18 @@ public class CityWeatherFragment extends Fragment implements SwipeRefreshLayout.
 
 	@InjectView(R.id.lv_forecast_weather) ListView lvForecastWeather;
 
-	private String mCity;
+	private StringPreference mCity;
 	private CurrentWeatherResponse mCurrentWeather;
 	private ForecastWeatherResponse mForecastWeather;
 
 	private OpenWeatherService mOpenWeatherService;
+
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+
+		mCity = new StringPreference(SharedPrefsUtils.getSharedPreferences(), SharedPrefsUtils.KEY_SELECTED_CITY);
+	}
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -72,7 +80,7 @@ public class CityWeatherFragment extends Fragment implements SwipeRefreshLayout.
 	@Override
 	public void onRefresh() {
 		setOnRefreshStartViews();
-		mCity = SharedPrefsUtils.getSelectedCity();
+		mCity.get();
 		requestWeatherData();
 	}
 
@@ -99,8 +107,8 @@ public class CityWeatherFragment extends Fragment implements SwipeRefreshLayout.
 
 	public void requestWeatherData() {
 
-		Observable.zip(mOpenWeatherService.getCurrentWeather(SharedPrefsUtils.getWeatherOptions(), mCity),
-				mOpenWeatherService.getForecastWeather(SharedPrefsUtils.getForecastWeatherOptions(), mCity),
+		Observable.zip(mOpenWeatherService.getCurrentWeather(SharedPrefsUtils.getWeatherOptions(), mCity.get()),
+				mOpenWeatherService.getForecastWeather(SharedPrefsUtils.getForecastWeatherOptions(), mCity.get()),
 				new Func2<CurrentWeatherResponse, ForecastWeatherResponse, Object>() {
 					@Override
 					public Object call(CurrentWeatherResponse currentWeatherResponse, ForecastWeatherResponse forecastWeatherResponse) {
