@@ -1,6 +1,7 @@
 package com.undabot.weatherapp.data.model.OpenWeatherApi;
 
 import com.google.gson.annotations.SerializedName;
+import com.undabot.weatherapp.data.api.ApiConstants;
 import com.undabot.weatherapp.data.utils.TextFormatUtils;
 
 public class Weather {
@@ -47,5 +48,9 @@ public class Weather {
 
 	public void setIconName(String iconName) {
 		this.iconName = iconName;
+	}
+
+	public String getIconUrl() {
+		return ApiConstants.OPEN_WEATHER_IMG_BASE_URL + iconName + ".png";
 	}
 }

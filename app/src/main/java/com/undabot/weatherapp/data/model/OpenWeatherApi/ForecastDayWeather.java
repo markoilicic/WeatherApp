@@ -2,8 +2,11 @@ package com.undabot.weatherapp.data.model.OpenWeatherApi;
 
 import com.google.gson.annotations.SerializedName;
 
+import org.joda.time.DateTime;
+
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 public class ForecastDayWeather {
 
@@ -79,5 +82,10 @@ public class ForecastDayWeather {
 
 	public void setWindDegrees(float windDegrees) {
 		this.windDegrees = windDegrees;
+	}
+
+	public String getDayNameShort() {
+		DateTime.Property dayName = new DateTime(timeStamp * 1000L).dayOfWeek(); //timestamp is in seconds, multiply it with 1000 to get milliseconds
+		return dayName.getAsShortText(Locale.ENGLISH).toUpperCase();
 	}
 }

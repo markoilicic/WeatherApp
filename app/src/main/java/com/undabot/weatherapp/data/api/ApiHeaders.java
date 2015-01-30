@@ -23,8 +23,8 @@ public class ApiHeaders implements RequestInterceptor {
 				break;
 
 			case HEADER_TYPE_PLACES_SERVICE:
-				request.addQueryParam("key", ApiConstants.GOOGLE_PLACES_API_KEY);
-				request.addQueryParam("types", "(cities)");
+				request.addQueryParam(ApiConstants.PARAM_GOOGLE_PLACES_API_KEY, ApiConstants.GOOGLE_PLACES_API_KEY);
+				request.addQueryParam(ApiConstants.PARAM_GOOGLE_PLACES_TYPES, ApiConstants.VALUE_GOOGLE_PLACES_TYPES_CITIES);
 				break;
 		}
 	}

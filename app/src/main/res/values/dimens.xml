@@ -6,9 +6,16 @@
     <dimen name="general_spacing">8dp</dimen>
     <dimen name="general_text_spacing">4dp</dimen>
 
+    <!-- Drawer -->
     <dimen name="drawer_width">280dp</dimen>
 
-    <!-- City weather activity -->
+    <!-- City weather activity/fragment -->
     <dimen name="error_message_txt">22sp</dimen>
+    <dimen name="city_header_height">180dp</dimen>
+
+    <dimen name="forecast_header_height">30dp</dimen>
+    <dimen name="forecast_list_icon_left_margin">52dp</dimen>
+    <dimen name="forecast_list_temp_right_margin">72dp</dimen>
+    <dimen name="forecast_list_icon_size">40dp</dimen>
 
 </resources>

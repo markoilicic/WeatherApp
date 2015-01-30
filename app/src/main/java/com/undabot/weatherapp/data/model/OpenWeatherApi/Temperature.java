@@ -2,7 +2,11 @@ package com.undabot.weatherapp.data.model.OpenWeatherApi;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.text.DecimalFormat;
+
 public class Temperature {
+	DecimalFormat formatPattern;
+
 	@SerializedName("day") private float day;
 	@SerializedName("min") private float min;
 	@SerializedName("max") private float max;
@@ -17,6 +21,7 @@ public class Temperature {
 		this.night = (float) -1;
 		this.eve = (float) -1;
 		this.morn = (float) -1;
+		this.formatPattern = new DecimalFormat("#.#");
 	}
 
 
@@ -66,5 +71,13 @@ public class Temperature {
 
 	public void setMorn(float morn) {
 		this.morn = morn;
+	}
+
+	public String getFormatedTemp() {
+		return formatPattern.format(day) + "°";
+	}
+
+	public String getFormatedTempRange() {
+		return formatPattern.format(min) + "°/" + formatPattern.format(max) + "°";
 	}
 }

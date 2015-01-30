@@ -3,27 +3,33 @@ package com.undabot.weatherapp;
 import android.app.Application;
 import android.content.Context;
 
+import net.danlew.android.joda.JodaTimeAndroid;
+
 import timber.log.Timber;
 
 
 public class App extends Application {
 
-    private static Context mAppContext;
+	private static Context mAppContext;
 
-    @Override
-    public void onCreate() {
-        super.onCreate();
+	public static Context getAppContext() {
+		return mAppContext;
+	}
 
-        mAppContext = getApplicationContext();
+	@Override
+	public void onCreate() {
+		super.onCreate();
 
-        if (BuildConfig.DEBUG) {
-            Timber.plant(new Timber.DebugTree());
-        } else {
-            Timber.plant(new Timber.HollowTree());
-        }
-    }
+		mAppContext = getApplicationContext();
 
-    public static Context getAppContext() {
-        return mAppContext;
-    }
+		//Init Joda Time
+		JodaTimeAndroid.init(this);
+
+		//Timber initialization
+		if (BuildConfig.DEBUG) {
+			Timber.plant(new Timber.DebugTree());
+		} else {
+			Timber.plant(new Timber.HollowTree());
+		}
+	}
 }

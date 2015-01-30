@@ -12,11 +12,10 @@ import rx.Observable;
 
 public interface OpenWeatherService {
 
-	@GET(ApiConstants.PATH_CURRENT_WEATHER)
+	@GET("/weather")
 	public Observable<CurrentWeatherResponse> getCurrentWeather(@QueryMap Map<String, String> options, @Query(ApiConstants.PARAM_QUERY_SEARCH) String cityName);
 
-	@GET(ApiConstants.PATH_FORECAST_WEATHER)
+	@GET("/forecast/daily")
 	public Observable<ForecastWeatherResponse> getForecastWeather(@QueryMap Map<String, String> options, @Query(ApiConstants.PARAM_QUERY_SEARCH) String cityName);
-
 
 }

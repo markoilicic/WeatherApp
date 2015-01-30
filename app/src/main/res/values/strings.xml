@@ -28,5 +28,6 @@
     <string name="add_city_dialog_title">Add new city</string>
     <string name="add_city_dialog_hint">Type city name...</string>
     <string name="add_city_dialog_warning_in_list">City already in list!</string>
+    <string name="forecast_header_title">7-day forecast</string>
 
 </resources>

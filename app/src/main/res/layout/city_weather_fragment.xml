@@ -4,8 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="center_horizontal|top"
-    android:orientation="vertical"
-    android:padding="@dimen/general_padding">
+    android:orientation="vertical">
 
     <android.support.v4.widget.SwipeRefreshLayout
         android:id="@+id/swipe_refresh_layout"
@@ -28,11 +27,12 @@
                 <RelativeLayout
                     android:id="@+id/city_header_container"
                     android:layout_width="match_parent"
-                    android:layout_height="200dp"
+                    android:layout_height="@dimen/city_header_height"
                     android:layout_gravity="center_horizontal"
-                    android:orientation="vertical">
+                    android:orientation="vertical"
+                    android:padding="@dimen/general_padding">
 
-                    <TextView
+                <TextView
                         android:id="@+id/tv_city_name"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -121,11 +121,21 @@
                         tools:text="15 m/s" />
                 </RelativeLayout>
 
-                <ListView
-                    android:id="@+id/lv_forecast_weather"
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/forecast_header_height"
+                    android:layout_marginTop="@dimen/general_spacing"
+                    android:background="@color/primary_light"
+                    android:gravity="center"
+                    android:text="@string/forecast_header_title"
+                    android:textColor="@color/white" />
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/rv_forecast_weather"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_marginTop="@dimen/general_padding" />
+                    android:paddingLeft="@dimen/general_padding"
+                    android:paddingRight="@dimen/general_padding" />
 
             </LinearLayout>
 
