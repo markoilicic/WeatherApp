@@ -5,52 +5,56 @@
     android:layout_height="match_parent">
 
     <TextView
-        android:id="@+id/tv_day_name"
+        android:id="@+id/tv_list_day_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_centerVertical="true"
+        android:textColor="@color/accent"
         tools:text="FRI" />
 
     <ImageView
         android:id="@+id/iv_list_weather_icon"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
+        android:layout_width="@dimen/forecast_list_icon_size"
+        android:layout_height="@dimen/forecast_list_icon_size"
         android:layout_centerVertical="true"
-        android:layout_toEndOf="@+id/tv_day_name"
-        android:layout_toRightOf="@+id/tv_day_name"
-        android:layout_marginLeft="@dimen/general_spacing"
-        android:layout_marginRight="@dimen/general_spacing"/>
+        android:layout_marginLeft="@dimen/forecast_list_icon_left_margin"
+        android:layout_marginRight="@dimen/general_spacing" />
 
     <TextView
-        android:id="@+id/tv_weather_description"
+        android:id="@+id/tv_list_weather_description"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
         android:layout_gravity="center_vertical"
         android:layout_toEndOf="@+id/iv_list_weather_icon"
         android:layout_toRightOf="@+id/iv_list_weather_icon"
+        android:textColor="@color/primary"
         tools:text="Light rain" />
 
     <TextView
         android:id="@+id/tv_list_temp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
-        android:layout_marginEnd="24dp"
-        android:layout_marginRight="24dp"
-        android:layout_toLeftOf="@+id/tv_temp_range"
-        android:layout_toStartOf="@+id/tv_temp_range"
+        android:layout_marginEnd="@dimen/forecast_list_temp_right_margin"
+        android:layout_marginRight="@dimen/forecast_list_temp_right_margin"
+        android:layout_toLeftOf="@+id/tv_list_temp_range"
+        android:layout_toStartOf="@+id/tv_list_temp_range"
+        android:textColor="@color/primary_dark"
+        android:textSize="18sp"
         tools:text="8,7°C" />
 
     <TextView
-        android:id="@+id/tv_temp_range"
+        android:id="@+id/tv_list_temp_range"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
-        android:textSize="12sp"
+        android:textColor="@color/primary"
+        android:textSize="11sp"
         tools:text="6,5° / 10°" />
 
 </RelativeLayout>

@@ -15,8 +15,8 @@
     <!-- City current weather fragment -->
     <string name="label_wind">wind:</string>
     <string name="title_activity_city_weather">City Weather</string>
-    <string name="title_activity_edit_city_list">Edit city list</string>
     <string name="action_add_city">Add</string>
+    <string name="loading">Loading…</string>
 
     <!-- Navigation Drawer -->
     <string name="drawer_open">Open</string>
@@ -24,8 +24,10 @@
     <string name="drawer_header_label">City list</string>
 
     <!-- Edit city list activity -->
+    <string name="title_activity_edit_city_list">Edit city list</string>
     <string name="add_city_dialog_title">Add new city</string>
     <string name="add_city_dialog_hint">Type city name...</string>
     <string name="add_city_dialog_warning_in_list">City already in list!</string>
+    <string name="forecast_header_title">7-day forecast</string>
 
 </resources>

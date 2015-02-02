@@ -3,20 +3,24 @@ package com.undabot.weatherapp.ui;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 import com.undabot.weatherapp.R;
-import com.undabot.weatherapp.data.api.ApiService;
 import com.undabot.weatherapp.data.api.ApiServiceManager;
-import com.undabot.weatherapp.data.model.CurrentWeatherResponse;
-import com.undabot.weatherapp.data.model.ForecastWeatherResponse;
+import com.undabot.weatherapp.data.api.OpenWeatherService;
+import com.undabot.weatherapp.data.model.OpenWeatherApi.CurrentWeatherResponse;
+import com.undabot.weatherapp.data.model.OpenWeatherApi.ForecastWeatherResponse;
+import com.undabot.weatherapp.data.prefs.StringPreference;
 import com.undabot.weatherapp.data.utils.SharedPrefsUtils;
+import com.undabot.weatherapp.ui.adapters.ForecastListAdapter;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -27,30 +31,40 @@ import rx.functions.Func2;
 import rx.schedulers.Schedulers;
 import timber.log.Timber;
 
-//TODO This is not finished, I did just some things for testing
 
 public class CityWeatherFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
 
-	@InjectView(R.id.swipe_refresh_layout) SwipeRefreshLayout swipeRefreshLayout;
+	@InjectView(R.id.swipe_refresh_layout) SwipeRefreshLayout mSwipeRefreshLayout;
 	@InjectView(R.id.city_weather_container) View cityWeatherContainer;
-	@InjectView(R.id.city_header_container) View cityHeaderContainer;
+	@InjectView(R.id.error_layout) View errorLayout;
 
 	@InjectView(R.id.tv_city_name) TextView tvCityName;
 	@InjectView(R.id.tv_weather_description) TextView tvWeatherDescription;
 	@InjectView(R.id.tv_temperature) TextView tvTemperature;
 	@InjectView(R.id.tv_temp_unit) TextView tvTempUnit;
 	@InjectView(R.id.tv_temp_range_value) TextView tvTempRange;
-	@InjectView(R.id.tv_temp_range_unit) TextView tvTempRangeUnit;
 	@InjectView(R.id.tv_wind_speed) TextView tvWindSpeed;
+	@InjectView(R.id.tv_error_message) TextView tvErrorMsg;
 	@InjectView(R.id.iv_weather_icon) ImageView ivWeatherIcon;
+	@InjectView(R.id.iv_wind_direction) ImageView ivWindDirection;
 
-	@InjectView(R.id.lv_forecast_weather) ListView lvForecastWeather;
+	@InjectView(R.id.rv_forecast_weather) RecyclerView rvForecastWeather;
 
-	private String mCity;
+	private LinearLayoutManager mlayoutManager;
+	private ForecastListAdapter mForecastListAdapter;
+
+	private StringPreference mCity;
 	private CurrentWeatherResponse mCurrentWeather;
 	private ForecastWeatherResponse mForecastWeather;
 
-	private ApiService mApiService;
+	private OpenWeatherService mOpenWeatherService;
+
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+
+		mCity = new StringPreference(SharedPrefsUtils.getSharedPreferences(), SharedPrefsUtils.KEY_SELECTED_CITY);
+	}
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -58,29 +72,57 @@ public class CityWeatherFragment extends Fragment implements SwipeRefreshLayout.
 
 		ButterKnife.inject(this, view);
 
-		mApiService = new ApiServiceManager().getApiService();
-		mCity = SharedPrefsUtils.getSelectedCity();
+		mOpenWeatherService = new ApiServiceManager().getApiService();
 
-		swipeRefreshLayout.setColorSchemeResources(R.color.primary, R.color.primary_dark, R.color.accent);
-		swipeRefreshLayout.setOnRefreshListener(this);
+		mSwipeRefreshLayout.setColorSchemeResources(R.color.primary, R.color.primary_dark, R.color.accent);
+		mSwipeRefreshLayout.setOnRefreshListener(this);
 
-		onRefresh();
+		rvForecastWeather.setHasFixedSize(true);
+		mlayoutManager = new LinearLayoutManager(getActivity().getApplicationContext());
+		rvForecastWeather.setLayoutManager(mlayoutManager);
+		rvForecastWeather.setItemAnimator(new DefaultItemAnimator());
+
+		refreshWeather();
 
 		return view;
 	}
 
 	@Override
 	public void onRefresh() {
-		swipeRefreshLayout.setRefreshing(true);
-		mCity = SharedPrefsUtils.getSelectedCity();
+		refreshWeather();
+	}
+
+	public void refreshWeather() {
+		setOnRefreshStartViews();
+		mCity.get();
 		requestWeatherData();
 	}
 
+	private void setOnRefreshStartViews() {
+		mSwipeRefreshLayout.setRefreshing(true);
+		cityWeatherContainer.setAlpha(0.5f);
+		errorLayout.setVisibility(View.GONE);
+	}
 
-	public void requestWeatherData() {
+	private void setOnRefreshSucessViews() {
+		mSwipeRefreshLayout.setRefreshing(false);
+		cityWeatherContainer.setAlpha(1f);
+		cityWeatherContainer.setVisibility(View.VISIBLE);
+		errorLayout.setVisibility(View.GONE);
+	}
 
-		Observable.zip(mApiService.getCurrentWeather(SharedPrefsUtils.getWeatherOptions(), mCity),
-				mApiService.getForecastWeather(SharedPrefsUtils.getForecastWeatherOptions(), mCity),
+	private void setOnRefreshErrorViews(String errorMsg) {
+		mSwipeRefreshLayout.setRefreshing(false);
+		cityWeatherContainer.setVisibility(View.GONE);
+		//Set error text
+		tvErrorMsg.setText(errorMsg);
+		errorLayout.setVisibility(View.VISIBLE);
+	}
+
+	private void requestWeatherData() {
+
+		Observable.zip(mOpenWeatherService.getCurrentWeather(SharedPrefsUtils.getWeatherOptions(), mCity.get()),
+				mOpenWeatherService.getForecastWeather(SharedPrefsUtils.getForecastWeatherOptions(), mCity.get()),
 				new Func2<CurrentWeatherResponse, ForecastWeatherResponse, Object>() {
 					@Override
 					public Object call(CurrentWeatherResponse currentWeatherResponse, ForecastWeatherResponse forecastWeatherResponse) {
@@ -93,14 +135,13 @@ public class CityWeatherFragment extends Fragment implements SwipeRefreshLayout.
 				.subscribe(new Subscriber<Object>() {
 					@Override
 					public void onCompleted() {
-						setCurrentWeather();
-						swipeRefreshLayout.setRefreshing(false);
+						setCityWeatherViews();
 					}
 
 					@Override
 					public void onError(Throwable e) {
-						Timber.e("Error on ");
-						swipeRefreshLayout.setRefreshing(false);
+						Timber.e("RequestWeatherData onError: " + e.getMessage());
+						setOnRefreshErrorViews(e.getMessage());
 					}
 
 					@Override
@@ -111,12 +152,47 @@ public class CityWeatherFragment extends Fragment implements SwipeRefreshLayout.
 
 	}
 
-	private void setCurrentWeather() {
-		tvCityName.setText(mCurrentWeather.getCityName());
-		tvTemperature.setText(String.valueOf(mCurrentWeather.getMainConditions().getTemperature()));
-		tvTempUnit.setText("°C");
-		tvWeatherDescription.setText(mCurrentWeather.getWeatherList().get(0).getDescription());
-		Picasso.with(getActivity()).load(mCurrentWeather.getIconUrl()).into(ivWeatherIcon);
+	private void setCityWeatherViews() {
+		//TODO manage errors in smarter way
+		//If responseCode != 200, there is some error message returned from server (usually)
+		if (mCurrentWeather.getResponseCode() != 200 || mForecastWeather.getResponseCode() != 200) {
+			setOnRefreshErrorViews(mCurrentWeather.getErrorMsg());
+			Timber.e("OnRefresh error from server: " + mCurrentWeather.getErrorMsg());
+		} else {
+			//------Current weather views-----
+			tvCityName.setText(mCurrentWeather.getCityName());
+			tvTemperature.setText(mCurrentWeather.getMainConditions().getFormatedTemp());
+			tvTempUnit.setText("°C");
+			tvWeatherDescription.setText(mCurrentWeather.getWeatherList().get(0).getDescription());
+			tvTempRange.setText(mCurrentWeather.getMainConditions().getFormatedTempRange());
+			tvWindSpeed.setText(mCurrentWeather.getWind().getSpeed() + "m/s");
+
+			Picasso.with(getActivity()).load(mCurrentWeather.getWeatherList().get(0).getIconUrl()).into(ivWeatherIcon);
+			ivWindDirection.setRotation(mCurrentWeather.getWind().getDegrees());
+
+
+			//-----Forecast views-----
+			mForecastListAdapter = new ForecastListAdapter(mForecastWeather.getForecastDayWeather());
+			rvForecastWeather.setAdapter(mForecastListAdapter);
+
+			/*
+			Temporarily swipeRefreshLayout is not compatible with recyclerView,
+			swipeRefreshLayout triggers when you try to scroll down recyclerView
+			Issue is known and it will be fixed, but for now this little hack do the trick
+
+			Issue link: https://code.google.com/p/android/issues/detail?id=78191
+			*/
+			rvForecastWeather.setOnScrollListener(new RecyclerView.OnScrollListener() {
+				@Override
+				public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+					super.onScrolled(recyclerView, dx, dy);
+					//If first visible item in RecyclerView is not 0, disable swipeRefreshLayout
+					mSwipeRefreshLayout.setEnabled(mlayoutManager.findFirstCompletelyVisibleItemPosition() == 0);
+				}
+			});
+
+			setOnRefreshSucessViews();
+		}
 	}
 
 }

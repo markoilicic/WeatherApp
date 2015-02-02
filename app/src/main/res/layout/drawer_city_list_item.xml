@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="@drawable/drawer_item_list_background"
     android:paddingBottom="@dimen/general_padding"
     android:paddingTop="@dimen/general_padding">
 
