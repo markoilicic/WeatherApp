@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:orientation="vertical"
+        android:padding="@dimen/general_padding">
+
+        <TextView
+            android:id="@+id/tv_city_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:textColor="@color/accent"
+            android:textSize="26sp"
+            tools:text="City name" />
+
+        <ImageView
+            android:id="@+id/iv_weather_icon"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@+id/tv_city_name"
+            android:layout_margin="@dimen/general_spacing"
+            tools:ignore="ContentDescription" />
+
+        <TextView
+            android:id="@+id/tv_temperature"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@id/iv_weather_icon"
+            android:layout_marginLeft="@dimen/general_spacing"
+            android:layout_marginTop="@dimen/general_spacing"
+            android:layout_toEndOf="@+id/iv_weather_icon"
+            android:layout_toRightOf="@+id/iv_weather_icon"
+            android:textColor="@color/primary_dark"
+            android:textSize="40sp"
+            tools:text="8,9" />
+
+        <TextView
+            android:id="@+id/tv_temp_unit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@id/tv_temperature"
+            android:layout_toEndOf="@+id/tv_temperature"
+            android:layout_toRightOf="@+id/tv_temperature"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textColor="@color/primary"
+            android:textSize="30sp"
+            tools:text="°C" />
+
+        <TextView
+            android:id="@+id/tv_temp_range_value"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_alignTop="@id/tv_temperature"
+            android:layout_marginTop="@dimen/general_padding"
+            android:textColor="@color/primary"
+            android:textSize="16sp"
+            tools:text="8,5°/12°" />
+
+        <TextView
+            android:id="@+id/tv_weather_description"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_below="@id/iv_weather_icon"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="@color/primary"
+            tools:text="Light rain" />
+
+        <TextView
+            android:id="@+id/tv_wind_speed"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_below="@id/iv_weather_icon"
+            android:layout_gravity="bottom"
+            android:layout_marginLeft="@dimen/general_spacing"
+            android:textColor="@color/primary"
+            android:textSize="16sp"
+            tools:text="15 m/s" />
+
+        <ImageView
+            android:id="@+id/iv_wind_direction"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_alignBottom="@id/tv_wind_speed"
+            android:layout_toLeftOf="@+id/tv_wind_speed"
+            android:layout_toStartOf="@+id/tv_wind_speed"
+            android:src="@android:drawable/arrow_down_float"
+            android:tint="@color/primary_dark" />
+
+    </RelativeLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/forecast_header_height"
+        android:background="@color/primary_light"
+        android:gravity="center"
+        android:text="@string/forecast_header_title"
+        android:textColor="@color/white" />
+
+</LinearLayout>

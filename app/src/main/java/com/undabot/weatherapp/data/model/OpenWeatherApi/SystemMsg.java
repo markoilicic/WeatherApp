@@ -8,12 +8,6 @@ public class SystemMsg {
 	@SerializedName("sunrise") private long sunrise;
 	@SerializedName("sunset") private long sunset;
 
-	public SystemMsg() {
-		this.country = "";
-		this.sunrise = (long) -1;
-		this.sunset = (long) -1;
-	}
-
 	public String getCountry() {
 		return country;
 	}

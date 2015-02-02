@@ -5,7 +5,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Filter;
 
 import com.undabot.weatherapp.data.api.ApiServiceManager;
-import com.undabot.weatherapp.data.api.GooglePlacesService;
+import com.undabot.weatherapp.data.api.GooglePlacesAPIService;
 import com.undabot.weatherapp.data.model.GoogleApi.Prediction;
 
 import java.util.ArrayList;
@@ -15,7 +15,7 @@ public class PlacesPredictionAdapter extends ArrayAdapter<String> {
 
 	private List<String> predictions;
 
-	private GooglePlacesService mGooglePlacesService;
+	private GooglePlacesAPIService mGooglePlacesService;
 
 	public PlacesPredictionAdapter(Activity context) {
 		super(context, android.R.layout.simple_dropdown_item_1line);

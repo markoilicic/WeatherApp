@@ -16,9 +16,8 @@ import java.util.Map;
 public class SharedPrefsUtils {
 
 	public static final String KEY_CITY_LIST = "city_list";
-	public static final String KEY_SELECTED_CITY = "drawer_selected_city";
-
 	private static StringPreference mCityList = new StringPreference(getSharedPreferences(), KEY_CITY_LIST, "[]");
+	public static final String KEY_SELECTED_CITY = "drawer_selected_city";
 	private static Gson mGson = new Gson();
 
 	public static SharedPreferences getSharedPreferences() {
@@ -30,8 +29,7 @@ public class SharedPrefsUtils {
 	 * Returns list of saved cities from shared prefs
 	 */
 	public static ArrayList<String> getCityList() {
-		String jsonArray = mCityList.get();
-		return mGson.fromJson(jsonArray, new TypeToken<ArrayList<String>>() {
+		return mGson.fromJson(mCityList.get(), new TypeToken<ArrayList<String>>() {
 		}.getType());
 	}
 
@@ -39,8 +37,7 @@ public class SharedPrefsUtils {
 	 * Sets list of cities to shared prefs
 	 */
 	public static void setCityList(ArrayList<String> cityList) {
-		String jsonArray = mGson.toJson(cityList);
-		mCityList.set(jsonArray);
+		mCityList.set(mGson.toJson(cityList));
 	}
 
 

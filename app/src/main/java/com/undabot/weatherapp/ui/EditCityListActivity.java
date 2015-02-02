@@ -77,7 +77,6 @@ public class EditCityListActivity extends ActionBarActivity {
 
 		//Create onTextChangeListener
 		input.addTextChangedListener(new TextWatcher() {
-			String inputText;
 
 			@Override
 			public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -89,7 +88,7 @@ public class EditCityListActivity extends ActionBarActivity {
 
 			@Override
 			public void afterTextChanged(Editable input) {
-				inputText = TextFormatUtils.capitalizeFirstLetterInEachWord(input.toString());
+				String inputText = TextFormatUtils.capitalizeFirstLetterInEachWord(input.toString());
 				//Check if city is already in list or length<3 and disable OK button
 				if (mCityList.contains(inputText)) {
 					dialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(false);

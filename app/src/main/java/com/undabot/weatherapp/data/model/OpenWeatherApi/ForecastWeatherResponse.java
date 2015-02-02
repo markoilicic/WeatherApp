@@ -13,9 +13,7 @@ public class ForecastWeatherResponse {
 	@SerializedName("list") private List<ForecastDayWeather> forecastDayWeather;
 
 	public ForecastWeatherResponse() {
-		this.responseCode = -1;
 		this.city = new City();
-		this.daysCount = -1;
 		this.forecastDayWeather = new ArrayList<ForecastDayWeather>();
 	}
 

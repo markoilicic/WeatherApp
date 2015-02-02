@@ -15,12 +15,6 @@ public class Temperature {
 	@SerializedName("morn") private float morn;
 
 	public Temperature() {
-		this.day = (float) -1;
-		this.min = (float) -1;
-		this.max = (float) -1;
-		this.night = (float) -1;
-		this.eve = (float) -1;
-		this.morn = (float) -1;
 		this.formatPattern = new DecimalFormat("#.#");
 	}
 

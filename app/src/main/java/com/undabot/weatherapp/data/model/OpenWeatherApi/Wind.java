@@ -7,11 +7,6 @@ public class Wind {
 	@SerializedName("speed") private float speed;
 	@SerializedName("deg") private float degrees;
 
-	public Wind() {
-		this.speed = (float) -1;
-		this.degrees = (float) -1;
-	}
-
 	public float getSpeed() {
 		return speed;
 	}

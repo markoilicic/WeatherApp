@@ -10,12 +10,12 @@ import retrofit.http.Query;
 import retrofit.http.QueryMap;
 import rx.Observable;
 
-public interface OpenWeatherService {
+public interface OpenWeatherAPIService {
 
 	@GET("/weather")
-	public Observable<CurrentWeatherResponse> getCurrentWeather(@QueryMap Map<String, String> options, @Query(ApiConstants.PARAM_QUERY_SEARCH) String cityName);
+	public Observable<CurrentWeatherResponse> getCurrentWeather(@QueryMap Map<String, String> options, @Query("q") String cityName);
 
 	@GET("/forecast/daily")
-	public Observable<ForecastWeatherResponse> getForecastWeather(@QueryMap Map<String, String> options, @Query(ApiConstants.PARAM_QUERY_SEARCH) String cityName);
+	public Observable<ForecastWeatherResponse> getForecastWeather(@QueryMap Map<String, String> options, @Query("q") String cityName);
 
 }

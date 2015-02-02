@@ -10,10 +10,7 @@ public class City {
 	@SerializedName("country") private String country;
 
 	public City() {
-		this.id = (long) -1;
-		this.name = "";
 		this.coordinates = new Coordinates();
-		this.country = "";
 	}
 
 	public long getId() {

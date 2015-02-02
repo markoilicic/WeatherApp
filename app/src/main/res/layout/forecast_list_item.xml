@@ -2,7 +2,9 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:paddingLeft="@dimen/general_padding"
+    android:paddingRight="@dimen/general_padding">
 
     <TextView
         android:id="@+id/tv_list_day_name"
@@ -28,6 +30,7 @@
         android:layout_centerVertical="true"
         android:layout_gravity="center_vertical"
         android:layout_toEndOf="@+id/iv_list_weather_icon"
+        android:layout_toLeftOf="@id/tv_temperature"
         android:layout_toRightOf="@+id/iv_list_weather_icon"
         android:textColor="@color/primary"
         tools:text="Light rain" />

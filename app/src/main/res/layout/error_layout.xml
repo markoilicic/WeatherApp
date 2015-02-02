@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TextView
+    android:id="@+id/tv_error_message"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/accent"
+    android:drawableTop="@android:drawable/stat_sys_warning"
+    android:gravity="center"
+    android:padding="@dimen/general_padding"
+    android:textColor="@color/white"
+    android:textSize="@dimen/error_message_txt"
+    tools:text="City not found!" />
+
