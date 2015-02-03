@@ -15,7 +15,6 @@ import com.undabot.weatherapp.data.api.ApiServiceManager;
 import com.undabot.weatherapp.data.api.OpenWeatherAPIService;
 import com.undabot.weatherapp.data.model.OpenWeatherApi.CurrentWeatherResponse;
 import com.undabot.weatherapp.data.model.OpenWeatherApi.ForecastWeatherResponse;
-import com.undabot.weatherapp.data.prefs.StringPreference;
 import com.undabot.weatherapp.data.utils.SharedPrefsUtils;
 import com.undabot.weatherapp.ui.adapters.RecyclerWeatherAdapter;
 
@@ -39,17 +38,16 @@ public class CityWeatherFragment extends Fragment implements SwipeRefreshLayout.
 	private LinearLayoutManager mlayoutManager;
 	private RecyclerWeatherAdapter mRecyclerWeatherAdapter;
 
-	private StringPreference mCity;
+	private String mCityName;
+	private boolean isFirstTimeRequest = true;
+
 	private CurrentWeatherResponse mCurrentWeather;
 	private ForecastWeatherResponse mForecastWeather;
 
 	private OpenWeatherAPIService mOpenWeatherService;
 
-	@Override
-	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-
-		mCity = new StringPreference(SharedPrefsUtils.getSharedPreferences(), SharedPrefsUtils.KEY_SELECTED_CITY);
+	public CityWeatherFragment(String cityName) {
+		this.mCityName = cityName;
 	}
 
 	@Override
@@ -67,7 +65,10 @@ public class CityWeatherFragment extends Fragment implements SwipeRefreshLayout.
 		mlayoutManager = new LinearLayoutManager(getActivity().getApplicationContext());
 		rvWeather.setLayoutManager(mlayoutManager);
 
-		refreshWeather();
+		if (isFirstTimeRequest) {
+			isFirstTimeRequest = false;
+			refreshWeather();
+		}
 
 		return view;
 	}
@@ -79,8 +80,8 @@ public class CityWeatherFragment extends Fragment implements SwipeRefreshLayout.
 
 	public void refreshWeather() {
 		setOnRefreshStartViews();
-		mCity.get();
 		requestWeatherData();
+		isFirstTimeRequest = false;
 	}
 
 	private void setOnRefreshStartViews() {
@@ -105,8 +106,8 @@ public class CityWeatherFragment extends Fragment implements SwipeRefreshLayout.
 
 	private void requestWeatherData() {
 
-		Observable.zip(mOpenWeatherService.getCurrentWeather(SharedPrefsUtils.getWeatherOptions(), mCity.get()),
-				mOpenWeatherService.getForecastWeather(SharedPrefsUtils.getForecastWeatherOptions(), mCity.get()),
+		Observable.zip(mOpenWeatherService.getCurrentWeather(SharedPrefsUtils.getWeatherOptions(), mCityName),
+				mOpenWeatherService.getForecastWeather(SharedPrefsUtils.getForecastWeatherOptions(), mCityName),
 				new Func2<CurrentWeatherResponse, ForecastWeatherResponse, Object>() {
 					@Override
 					public Object call(CurrentWeatherResponse currentWeatherResponse, ForecastWeatherResponse forecastWeatherResponse) {

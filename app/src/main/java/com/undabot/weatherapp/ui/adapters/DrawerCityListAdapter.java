@@ -49,7 +49,6 @@ public class DrawerCityListAdapter extends ArrayAdapter<String> {
 				convertView.setBackgroundResource(R.color.white);
 			}
 		}
-
 		holder.cityName.setText(mCityList.get(position));
 		return convertView;
 	}

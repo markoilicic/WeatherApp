@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.support.v4.view.PagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -18,6 +20,7 @@ import com.undabot.weatherapp.data.prefs.BooleanPreference;
 import com.undabot.weatherapp.data.prefs.StringPreference;
 import com.undabot.weatherapp.data.utils.SharedPrefsUtils;
 import com.undabot.weatherapp.ui.adapters.DrawerCityListAdapter;
+import com.undabot.weatherapp.ui.adapters.WeatherPagerAdapter;
 
 import java.util.ArrayList;
 
@@ -33,6 +36,7 @@ public class CityWeatherActivity extends ActionBarActivity {
 	@InjectView(R.id.drawer_layout) DrawerLayout mDrawerLayout;
 	@InjectView(R.id.drawer_fragment) View mDrawerView;
 	@InjectView(R.id.lv_drawer_city_list) ListView lvDrawerCityList;
+	@InjectView(R.id.view_pager) ViewPager viewPager;
 
 	private ActionBarDrawerToggle mDrawerToggle;
 
@@ -42,8 +46,7 @@ public class CityWeatherActivity extends ActionBarActivity {
 
 	private ArrayList<String> mCityList;
 	private DrawerCityListAdapter adapter;
-
-	private CityWeatherFragment mCityWeatherFragment;
+	private PagerAdapter mPagerAdapter;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -61,8 +64,7 @@ public class CityWeatherActivity extends ActionBarActivity {
 		mSelectedCity = new StringPreference(sharedPreferences, SharedPrefsUtils.KEY_SELECTED_CITY);
 		mCityList = SharedPrefsUtils.getCityList();
 
-		mCityWeatherFragment = (CityWeatherFragment) getSupportFragmentManager().findFragmentById(R.id.city_weather_fragment);
-
+		setupViewPager();
 		setupDrawer();
 
 	}
@@ -77,6 +79,28 @@ public class CityWeatherActivity extends ActionBarActivity {
 	public void onConfigurationChanged(Configuration newConfig) {
 		super.onConfigurationChanged(newConfig);
 		mDrawerToggle.syncState();
+	}
+
+
+	private void setupViewPager() {
+		mPagerAdapter = new WeatherPagerAdapter(getSupportFragmentManager(), mCityList);
+		viewPager.setAdapter(mPagerAdapter);
+		viewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+
+			@Override
+			public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+			}
+
+			@Override
+			public void onPageSelected(int position) {
+				mSelectedCity.set(mCityList.get(viewPager.getCurrentItem()));
+				adapter.notifyDataSetChanged();
+			}
+
+			@Override
+			public void onPageScrollStateChanged(int state) {
+			}
+		});
 	}
 
 	private void setupDrawer() {
@@ -116,9 +140,10 @@ public class CityWeatherActivity extends ActionBarActivity {
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 				mSelectedCity.set(mCityList.get(position));
+				lvDrawerCityList.setSelection(position);
 				adapter.notifyDataSetChanged();
+				viewPager.setCurrentItem(position);
 				mDrawerLayout.closeDrawer(Gravity.LEFT);
-				mCityWeatherFragment.onRefresh();
 			}
 		});
 
@@ -128,4 +153,5 @@ public class CityWeatherActivity extends ActionBarActivity {
 	public void onEditCityListClick() {
 		startActivity(new Intent(this, EditCityListActivity.class));
 	}
+
 }
