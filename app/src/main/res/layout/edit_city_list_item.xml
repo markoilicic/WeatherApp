@@ -13,7 +13,7 @@
         android:layout_alignParentLeft="true"
         android:layout_centerVertical="true"
         android:layout_marginLeft="@dimen/general_padding"
-        android:textColor="@color/primary_text"
+        android:textColor="@color/primary_dark"
         tools:text="City name" />
 
     <ImageButton

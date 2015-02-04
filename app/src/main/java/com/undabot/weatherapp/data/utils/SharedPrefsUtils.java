@@ -18,6 +18,8 @@ public class SharedPrefsUtils {
 	public static final String KEY_CITY_LIST = "city_list";
 	private static StringPreference mCityList = new StringPreference(getSharedPreferences(), KEY_CITY_LIST, "[]");
 	public static final String KEY_SELECTED_CITY = "drawer_selected_city";
+	public static final String KEY_SELECTED_POSITION = "drawer_selected_position";
+
 	private static Gson mGson = new Gson();
 
 	public static SharedPreferences getSharedPreferences() {

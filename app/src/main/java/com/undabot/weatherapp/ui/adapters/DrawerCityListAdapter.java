@@ -8,7 +8,7 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import com.undabot.weatherapp.R;
-import com.undabot.weatherapp.data.prefs.StringPreference;
+import com.undabot.weatherapp.data.prefs.IntPreference;
 import com.undabot.weatherapp.data.utils.SharedPrefsUtils;
 
 import java.util.ArrayList;
@@ -20,13 +20,12 @@ import butterknife.InjectView;
 public class DrawerCityListAdapter extends ArrayAdapter<String> {
 	private Context mContext;
 	private List<String> mCityList;
-	private StringPreference mSelectedCity;
+	private IntPreference mSelectedPosition;
 
-	public DrawerCityListAdapter(Context context, ArrayList<String> cityList, StringPreference mSelectedCity) {
+	public DrawerCityListAdapter(Context context, ArrayList<String> cityList) {
 		super(context, R.layout.drawer_city_list_item, cityList);
 		this.mContext = context;
 		this.mCityList = SharedPrefsUtils.getCityList();
-		this.mSelectedCity = mSelectedCity;
 	}
 
 	@Override
@@ -41,14 +40,6 @@ public class DrawerCityListAdapter extends ArrayAdapter<String> {
 			holder = (ViewHolder) convertView.getTag();
 		}
 
-		if (mSelectedCity.isSet()) {
-			//Check if item is selected and set custom background color
-			if (mSelectedCity.get().equals(mCityList.get(position))) {
-				convertView.setBackgroundResource(R.color.drawer_selected_item);
-			} else {
-				convertView.setBackgroundResource(R.color.white);
-			}
-		}
 		holder.cityName.setText(mCityList.get(position));
 		return convertView;
 	}
@@ -56,7 +47,7 @@ public class DrawerCityListAdapter extends ArrayAdapter<String> {
 	@Override
 	public void notifyDataSetChanged() {
 		super.notifyDataSetChanged();
-		this.mSelectedCity.get();
+		//this.mSelectedPosition.get();
 	}
 
 	static class ViewHolder {

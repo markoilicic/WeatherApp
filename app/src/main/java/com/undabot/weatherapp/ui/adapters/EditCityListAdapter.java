@@ -9,6 +9,7 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.undabot.weatherapp.R;
+import com.undabot.weatherapp.data.prefs.IntPreference;
 import com.undabot.weatherapp.data.utils.SharedPrefsUtils;
 
 import java.util.ArrayList;
@@ -16,12 +17,12 @@ import java.util.ArrayList;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 
-public class CityListAdapter extends ArrayAdapter<String> {
+public class EditCityListAdapter extends ArrayAdapter<String> {
 
 	private Context mContext;
 	private ArrayList<String> mCityList;
 
-	public CityListAdapter(Context context, ArrayList<String> cityList) {
+	public EditCityListAdapter(Context context, ArrayList<String> cityList) {
 		super(context, R.layout.edit_city_list_item, cityList);
 		this.mContext = context;
 		this.mCityList = cityList;
@@ -45,6 +46,12 @@ public class CityListAdapter extends ArrayAdapter<String> {
 			public void onClick(View v) {
 				mCityList.remove(position);
 				SharedPrefsUtils.setCityList(mCityList);
+				// Subtract 1 from selectedPosition if position <= selectedPosition,
+				// so drawer opens the same selected item or the one above if selected is erased
+				IntPreference selectedPosition = new IntPreference(SharedPrefsUtils.getSharedPreferences(), SharedPrefsUtils.KEY_SELECTED_POSITION);
+				if (selectedPosition.get() >= position && position > 0) {
+					selectedPosition.set(selectedPosition.get() - 1);
+				}
 				notifyDataSetChanged();
 			}
 		});

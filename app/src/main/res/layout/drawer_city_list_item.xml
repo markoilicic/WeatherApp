@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@drawable/drawer_item_list_background"
+    android:background="@drawable/drawer_item_selector"
     android:paddingBottom="@dimen/general_padding"
     android:paddingTop="@dimen/general_padding">
 
@@ -21,6 +21,7 @@
         android:layout_alignParentLeft="true"
         android:layout_centerVertical="true"
         android:layout_marginLeft="72dp"
+        android:textColor="@color/drawer_item_text_selector"
         android:textSize="18sp"
         tools:text="City name" />
 

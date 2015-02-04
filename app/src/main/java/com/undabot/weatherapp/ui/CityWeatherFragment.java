@@ -39,7 +39,6 @@ public class CityWeatherFragment extends Fragment implements SwipeRefreshLayout.
 	private RecyclerWeatherAdapter mRecyclerWeatherAdapter;
 
 	private String mCityName;
-	private boolean isFirstTimeRequest = true;
 
 	private CurrentWeatherResponse mCurrentWeather;
 	private ForecastWeatherResponse mForecastWeather;
@@ -65,23 +64,21 @@ public class CityWeatherFragment extends Fragment implements SwipeRefreshLayout.
 		mlayoutManager = new LinearLayoutManager(getActivity().getApplicationContext());
 		rvWeather.setLayoutManager(mlayoutManager);
 
-		if (isFirstTimeRequest) {
-			isFirstTimeRequest = false;
-			refreshWeather();
-		}
+		refreshWeather();
 
 		return view;
 	}
 
 	@Override
 	public void onRefresh() {
+		Timber.d("onRefresh called");
 		refreshWeather();
 	}
 
 	public void refreshWeather() {
+		Timber.d("Refreshing weather data for " + mCityName);
 		setOnRefreshStartViews();
 		requestWeatherData();
-		isFirstTimeRequest = false;
 	}
 
 	private void setOnRefreshStartViews() {

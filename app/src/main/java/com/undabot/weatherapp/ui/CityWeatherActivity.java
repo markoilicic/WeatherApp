@@ -16,8 +16,7 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.undabot.weatherapp.R;
-import com.undabot.weatherapp.data.prefs.BooleanPreference;
-import com.undabot.weatherapp.data.prefs.StringPreference;
+import com.undabot.weatherapp.data.prefs.IntPreference;
 import com.undabot.weatherapp.data.utils.SharedPrefsUtils;
 import com.undabot.weatherapp.ui.adapters.DrawerCityListAdapter;
 import com.undabot.weatherapp.ui.adapters.WeatherPagerAdapter;
@@ -36,16 +35,15 @@ public class CityWeatherActivity extends ActionBarActivity {
 	@InjectView(R.id.drawer_layout) DrawerLayout mDrawerLayout;
 	@InjectView(R.id.drawer_fragment) View mDrawerView;
 	@InjectView(R.id.lv_drawer_city_list) ListView lvDrawerCityList;
-	@InjectView(R.id.view_pager) ViewPager viewPager;
+	@InjectView(R.id.view_pager) ViewPager mPager;
+	@InjectView(R.id.empty_city_list_layout) View mEmptyListLayout;
 
 	private ActionBarDrawerToggle mDrawerToggle;
 
-	private SharedPreferences sharedPreferences;
-	private BooleanPreference mIsUserLearnedDrawer;
-	private StringPreference mSelectedCity;
+	private IntPreference mSelectedPosition;
 
 	private ArrayList<String> mCityList;
-	private DrawerCityListAdapter adapter;
+	private DrawerCityListAdapter mDrawerAdapter;
 	private PagerAdapter mPagerAdapter;
 
 	@Override
@@ -59,9 +57,8 @@ public class CityWeatherActivity extends ActionBarActivity {
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
 		//Get shared prefs
-		sharedPreferences = SharedPrefsUtils.getSharedPreferences();
-		mIsUserLearnedDrawer = new BooleanPreference(sharedPreferences, KEY_USER_LEARNED_DRAWER, false);
-		mSelectedCity = new StringPreference(sharedPreferences, SharedPrefsUtils.KEY_SELECTED_CITY);
+		SharedPreferences sharedPreferences = SharedPrefsUtils.getSharedPreferences();
+		mSelectedPosition = new IntPreference(sharedPreferences, SharedPrefsUtils.KEY_SELECTED_POSITION, 0);
 		mCityList = SharedPrefsUtils.getCityList();
 
 		setupViewPager();
@@ -83,9 +80,9 @@ public class CityWeatherActivity extends ActionBarActivity {
 
 
 	private void setupViewPager() {
-		mPagerAdapter = new WeatherPagerAdapter(getSupportFragmentManager(), mCityList);
-		viewPager.setAdapter(mPagerAdapter);
-		viewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+		mPagerAdapter = new WeatherPagerAdapter(getSupportFragmentManager(), createCityWeatherFragmentList());
+		mPager.setAdapter(mPagerAdapter);
+		mPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
 
 			@Override
 			public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
@@ -93,29 +90,20 @@ public class CityWeatherActivity extends ActionBarActivity {
 
 			@Override
 			public void onPageSelected(int position) {
-				mSelectedCity.set(mCityList.get(viewPager.getCurrentItem()));
-				adapter.notifyDataSetChanged();
+				mSelectedPosition.set(position);
+				lvDrawerCityList.setItemChecked(position, true);
 			}
 
 			@Override
 			public void onPageScrollStateChanged(int state) {
 			}
 		});
+
 	}
 
 	private void setupDrawer() {
-		adapter = new DrawerCityListAdapter(this, mCityList, mSelectedCity);
+		mDrawerAdapter = new DrawerCityListAdapter(this, mCityList);
 		mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, mToolbar, R.string.drawer_open, R.string.drawer_close) {
-
-			@Override
-			public void onDrawerOpened(View drawerView) {
-				super.onDrawerOpened(drawerView);
-				//If user started for first time, set isUserLearnedDrawer = true so drawer doesn't opens in next start
-				if (!mIsUserLearnedDrawer.get()) {
-					mIsUserLearnedDrawer.set(true);
-				}
-				invalidateOptionsMenu();
-			}
 
 			@Override
 			public void onDrawerSlide(View drawerView, float slideOffset) {
@@ -127,27 +115,50 @@ public class CityWeatherActivity extends ActionBarActivity {
 			}
 		};
 		mDrawerLayout.setDrawerListener(mDrawerToggle);
-		setDrawerList();
-		//Show drawer if user never seen it
-		if (!mIsUserLearnedDrawer.get()) {
-			mDrawerLayout.openDrawer(mDrawerView);
-		}
-	}
 
-	public void setDrawerList() {
-		lvDrawerCityList.setAdapter(adapter);
+		lvDrawerCityList.setAdapter(mDrawerAdapter);
 		lvDrawerCityList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-				mSelectedCity.set(mCityList.get(position));
-				lvDrawerCityList.setSelection(position);
-				adapter.notifyDataSetChanged();
-				viewPager.setCurrentItem(position);
+				mSelectedPosition.set(position);
+				lvDrawerCityList.setItemChecked(position, true);
+				mPager.setCurrentItem(position);
 				mDrawerLayout.closeDrawer(Gravity.LEFT);
 			}
 		});
+		//Show drawer if list is empty
+		if (mCityList.size() == 0) {
+			showEmptyListLayout(true);
+			mDrawerLayout.openDrawer(mDrawerView);
+		} else {
+			showEmptyListLayout(false);
+			// Set drawer last selected item
+			lvDrawerCityList.setItemChecked(mSelectedPosition.get(), true);
+			// Set viewPager to last selected position
+			mPager.setCurrentItem(mSelectedPosition.get());
+		}
 
 	}
+
+	private ArrayList<CityWeatherFragment> createCityWeatherFragmentList() {
+		ArrayList<CityWeatherFragment> cityWeatherFragmentList = new ArrayList<>();
+
+		for (String cityName : mCityList) {
+			cityWeatherFragmentList.add(new CityWeatherFragment(cityName));
+		}
+		return cityWeatherFragmentList;
+	}
+
+	public void showEmptyListLayout(boolean isShown) {
+		if (isShown) {
+			mEmptyListLayout.setVisibility(View.VISIBLE);
+			lvDrawerCityList.setVisibility(View.GONE);
+		} else {
+			mEmptyListLayout.setVisibility(View.GONE);
+			lvDrawerCityList.setVisibility(View.VISIBLE);
+		}
+	}
+
 
 	@OnClick(R.id.btn_drawer_edit_city_list)
 	public void onEditCityListClick() {

@@ -4,28 +4,27 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
-import com.undabot.weatherapp.data.utils.SharedPrefsUtils;
 import com.undabot.weatherapp.ui.CityWeatherFragment;
 
 import java.util.ArrayList;
 
 public class WeatherPagerAdapter extends FragmentStatePagerAdapter {
 
-	private ArrayList<String> mCityList;
+	private ArrayList<CityWeatherFragment> mCityWeatherFragmentList;
 
-	public WeatherPagerAdapter(FragmentManager fm, ArrayList<String> cityList) {
+	public WeatherPagerAdapter(FragmentManager fm, ArrayList<CityWeatherFragment> cityWeatherFragmentList) {
 		super(fm);
-		this.mCityList = cityList;
+		this.mCityWeatherFragmentList = cityWeatherFragmentList;
 	}
 
 	@Override
 	public int getCount() {
-		return SharedPrefsUtils.getCityList().size();
+		return mCityWeatherFragmentList.size();
 	}
 
 	@Override
 	public Fragment getItem(int position) {
-		return new CityWeatherFragment(mCityList.get(position));
+		return mCityWeatherFragmentList.get(position);
 	}
 
 

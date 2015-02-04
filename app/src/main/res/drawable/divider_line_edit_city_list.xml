@@ -3,7 +3,7 @@
     android:insetLeft="@dimen/general_padding">
 
     <shape>
-        <solid android:color="@color/divider" />
+        <solid android:color="@color/primary_light" />
     </shape>
 
 </inset>
