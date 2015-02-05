@@ -15,8 +15,10 @@ import com.undabot.weatherapp.data.api.ApiServiceManager;
 import com.undabot.weatherapp.data.api.OpenWeatherAPIService;
 import com.undabot.weatherapp.data.model.OpenWeatherApi.CurrentWeatherResponse;
 import com.undabot.weatherapp.data.model.OpenWeatherApi.ForecastWeatherResponse;
+import com.undabot.weatherapp.data.model.OpenWeatherApi.ResponseEnvelope;
 import com.undabot.weatherapp.data.utils.SharedPrefsUtils;
 import com.undabot.weatherapp.ui.adapters.RecyclerWeatherAdapter;
+import com.undabot.weatherapp.utils.ConnectionUtils;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -35,13 +37,8 @@ public class CityWeatherFragment extends Fragment implements SwipeRefreshLayout.
 
 	@InjectView(R.id.rv_forecast_weather) RecyclerView rvWeather;
 
-	private LinearLayoutManager mlayoutManager;
-	private RecyclerWeatherAdapter mRecyclerWeatherAdapter;
-
 	private String mCityName;
-
-	private CurrentWeatherResponse mCurrentWeather;
-	private ForecastWeatherResponse mForecastWeather;
+	private ResponseEnvelope mResponseEnvelope;
 
 	private OpenWeatherAPIService mOpenWeatherService;
 
@@ -61,7 +58,7 @@ public class CityWeatherFragment extends Fragment implements SwipeRefreshLayout.
 		mSwipeRefreshLayout.setOnRefreshListener(this);
 
 		rvWeather.setHasFixedSize(true);
-		mlayoutManager = new LinearLayoutManager(getActivity().getApplicationContext());
+		LinearLayoutManager mlayoutManager = new LinearLayoutManager(getActivity().getApplicationContext());
 		rvWeather.setLayoutManager(mlayoutManager);
 
 		refreshWeather();
@@ -71,14 +68,17 @@ public class CityWeatherFragment extends Fragment implements SwipeRefreshLayout.
 
 	@Override
 	public void onRefresh() {
-		Timber.d("onRefresh called");
 		refreshWeather();
 	}
 
 	public void refreshWeather() {
 		Timber.d("Refreshing weather data for " + mCityName);
-		setOnRefreshStartViews();
-		requestWeatherData();
+		if (ConnectionUtils.isConnected(getActivity())) {
+			setOnRefreshStartViews();
+			requestWeatherData();
+		} else {
+			setOnRefreshErrorViews(getString(R.string.error_no_connection));
+		}
 	}
 
 	private void setOnRefreshStartViews() {
@@ -115,16 +115,14 @@ public class CityWeatherFragment extends Fragment implements SwipeRefreshLayout.
 
 		Observable.zip(mOpenWeatherService.getCurrentWeather(SharedPrefsUtils.getWeatherOptions(), mCityName),
 				mOpenWeatherService.getForecastWeather(SharedPrefsUtils.getForecastWeatherOptions(), mCityName),
-				new Func2<CurrentWeatherResponse, ForecastWeatherResponse, Object>() {
+				new Func2<CurrentWeatherResponse, ForecastWeatherResponse, ResponseEnvelope>() {
 					@Override
-					public Object call(CurrentWeatherResponse currentWeatherResponse, ForecastWeatherResponse forecastWeatherResponse) {
-						mCurrentWeather = currentWeatherResponse;
-						mForecastWeather = forecastWeatherResponse;
-						return null;
+					public ResponseEnvelope call(CurrentWeatherResponse currentWeatherResponse, ForecastWeatherResponse forecastWeatherResponse) {
+						return new ResponseEnvelope(currentWeatherResponse, forecastWeatherResponse);
 					}
 				}).subscribeOn(Schedulers.newThread())
 				.observeOn(AndroidSchedulers.mainThread())
-				.subscribe(new Subscriber<Object>() {
+				.subscribe(new Subscriber<ResponseEnvelope>() {
 					@Override
 					public void onCompleted() {
 						setCityWeatherViews();
@@ -133,26 +131,27 @@ public class CityWeatherFragment extends Fragment implements SwipeRefreshLayout.
 					@Override
 					public void onError(Throwable e) {
 						Timber.e("RequestWeatherData onError: " + e.getMessage());
-						setOnRefreshErrorViews(e.getMessage());
+						setOnRefreshErrorViews(getString(R.string.error_message));
 					}
 
 					@Override
-					public void onNext(Object o) {
-
+					public void onNext(ResponseEnvelope responseEnvelope) {
+						mResponseEnvelope = responseEnvelope;
 					}
 				});
 
 	}
 
 	private void setCityWeatherViews() {
-		//TODO manage errors in smarter way
-		//If responseCode != 200, there is some error message returned from server (usually)
-		if (mCurrentWeather.getResponseCode() != 200 || mForecastWeather.getResponseCode() != 200) {
-			setOnRefreshErrorViews(mCurrentWeather.getErrorMsg());
-			Timber.e("OnRefresh error from server: " + mCurrentWeather.getErrorMsg());
+		//If responseCode != 200, there is some error message
+		if (mResponseEnvelope.getResponseCode() != 200) {
+			setOnRefreshErrorViews(mResponseEnvelope.getErrorMessage());
+			Timber.e("OnRefresh error from server: " + mResponseEnvelope.getErrorMessage());
 		} else {
-			mRecyclerWeatherAdapter = new RecyclerWeatherAdapter(mCurrentWeather, mForecastWeather.getForecastDayWeather());
-			rvWeather.setAdapter(mRecyclerWeatherAdapter);
+			RecyclerWeatherAdapter recyclerWeatherAdapter = new RecyclerWeatherAdapter(
+					mResponseEnvelope.getCurrentWeather(),
+					mResponseEnvelope.getForecastWeatherList());
+			rvWeather.setAdapter(recyclerWeatherAdapter);
 
 			setOnRefreshSucessViews();
 		}

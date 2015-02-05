@@ -28,4 +28,10 @@
     <string name="add_city_dialog_warning_in_list">City already in list!</string>
     <string name="forecast_header_title">7-day forecast</string>
 
+    <!-- Error messages -->
+    <string name="error_city_not_found">City not found! \nTry to refresh or check city name.</string>
+    <string name="error_server_unknown">Server error! \nTry to refresh.</string>
+    <string name="error_no_connection">No internet connection!</string>
+    <string name="error_message">Oops! \nTry to refresh.</string>
+
 </resources>
