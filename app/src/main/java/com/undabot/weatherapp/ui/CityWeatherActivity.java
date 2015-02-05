@@ -29,8 +29,6 @@ import butterknife.OnClick;
 
 public class CityWeatherActivity extends ActionBarActivity {
 
-	public static final String KEY_USER_LEARNED_DRAWER = "user_learned_drawer";
-
 	@InjectView(R.id.toolbar) Toolbar mToolbar;
 	@InjectView(R.id.drawer_layout) DrawerLayout mDrawerLayout;
 	@InjectView(R.id.drawer_fragment) View mDrawerView;
@@ -77,7 +75,6 @@ public class CityWeatherActivity extends ActionBarActivity {
 		super.onConfigurationChanged(newConfig);
 		mDrawerToggle.syncState();
 	}
-
 
 	private void setupViewPager() {
 		mPagerAdapter = new WeatherPagerAdapter(getSupportFragmentManager(), createCityWeatherFragmentList());

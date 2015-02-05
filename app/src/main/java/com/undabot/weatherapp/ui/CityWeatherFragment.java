@@ -16,7 +16,6 @@ import com.undabot.weatherapp.data.api.OpenWeatherAPIService;
 import com.undabot.weatherapp.data.model.OpenWeatherApi.CurrentWeatherResponse;
 import com.undabot.weatherapp.data.model.OpenWeatherApi.ForecastWeatherResponse;
 import com.undabot.weatherapp.data.model.OpenWeatherApi.ResponseEnvelope;
-import com.undabot.weatherapp.data.utils.SharedPrefsUtils;
 import com.undabot.weatherapp.ui.adapters.RecyclerWeatherAdapter;
 import com.undabot.weatherapp.utils.ConnectionUtils;
 
@@ -31,6 +30,8 @@ import timber.log.Timber;
 
 
 public class CityWeatherFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
+
+	private static final int FORECAST_DAYS_NUMBER = 7;
 
 	@InjectView(R.id.swipe_refresh_layout) SwipeRefreshLayout mSwipeRefreshLayout;
 	@InjectView(R.id.error_layout) TextView errorLayout;
@@ -58,8 +59,8 @@ public class CityWeatherFragment extends Fragment implements SwipeRefreshLayout.
 		mSwipeRefreshLayout.setOnRefreshListener(this);
 
 		rvWeather.setHasFixedSize(true);
-		LinearLayoutManager mlayoutManager = new LinearLayoutManager(getActivity().getApplicationContext());
-		rvWeather.setLayoutManager(mlayoutManager);
+		LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity().getApplicationContext());
+		rvWeather.setLayoutManager(layoutManager);
 
 		refreshWeather();
 
@@ -113,8 +114,8 @@ public class CityWeatherFragment extends Fragment implements SwipeRefreshLayout.
 
 	private void requestWeatherData() {
 
-		Observable.zip(mOpenWeatherService.getCurrentWeather(SharedPrefsUtils.getWeatherOptions(), mCityName),
-				mOpenWeatherService.getForecastWeather(SharedPrefsUtils.getForecastWeatherOptions(), mCityName),
+		Observable.zip(mOpenWeatherService.getCurrentWeather(mCityName),
+				mOpenWeatherService.getForecastWeather(mCityName, FORECAST_DAYS_NUMBER),
 				new Func2<CurrentWeatherResponse, ForecastWeatherResponse, ResponseEnvelope>() {
 					@Override
 					public ResponseEnvelope call(CurrentWeatherResponse currentWeatherResponse, ForecastWeatherResponse forecastWeatherResponse) {

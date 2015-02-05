@@ -8,7 +8,6 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import com.undabot.weatherapp.R;
-import com.undabot.weatherapp.data.prefs.IntPreference;
 import com.undabot.weatherapp.data.utils.SharedPrefsUtils;
 
 import java.util.ArrayList;
@@ -20,7 +19,6 @@ import butterknife.InjectView;
 public class DrawerCityListAdapter extends ArrayAdapter<String> {
 	private Context mContext;
 	private List<String> mCityList;
-	private IntPreference mSelectedPosition;
 
 	public DrawerCityListAdapter(Context context, ArrayList<String> cityList) {
 		super(context, R.layout.drawer_city_list_item, cityList);
@@ -42,12 +40,6 @@ public class DrawerCityListAdapter extends ArrayAdapter<String> {
 
 		holder.cityName.setText(mCityList.get(position));
 		return convertView;
-	}
-
-	@Override
-	public void notifyDataSetChanged() {
-		super.notifyDataSetChanged();
-		//this.mSelectedPosition.get();
 	}
 
 	static class ViewHolder {
