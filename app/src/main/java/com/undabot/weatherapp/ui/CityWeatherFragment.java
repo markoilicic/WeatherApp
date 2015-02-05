@@ -82,7 +82,17 @@ public class CityWeatherFragment extends Fragment implements SwipeRefreshLayout.
 	}
 
 	private void setOnRefreshStartViews() {
-		mSwipeRefreshLayout.setRefreshing(true);
+		/*
+		When swipeRefreshLayout.setRefreshing() is called programmatically, refreshing layout is not visible
+		This approach fixes the problem
+		issue: https://code.google.com/p/android/issues/detail?id=77712
+		*/
+		mSwipeRefreshLayout.post(new Runnable() {
+			@Override
+			public void run() {
+				mSwipeRefreshLayout.setRefreshing(true);
+			}
+		});
 		rvWeather.setAlpha(0.5f);
 		errorLayout.setVisibility(View.GONE);
 	}
