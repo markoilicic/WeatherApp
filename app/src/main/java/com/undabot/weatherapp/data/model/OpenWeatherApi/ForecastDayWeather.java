@@ -19,13 +19,8 @@ public class ForecastDayWeather {
 	@SerializedName("deg") private float windDegrees;
 
 	public ForecastDayWeather() {
-		this.timeStamp = (long) -1;
 		this.temperature = new Temperature();
-		this.pressure = (float) -1;
-		this.humidity = (float) -1;
 		this.weatherList = new ArrayList<Weather>();
-		this.windSpeed = (float) -1;
-		this.windDegrees = (float) -1;
 	}
 
 	public long getTimeStamp() {

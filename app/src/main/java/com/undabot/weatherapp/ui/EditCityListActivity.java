@@ -3,6 +3,7 @@ package com.undabot.weatherapp.ui;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.support.v4.app.NavUtils;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
@@ -14,7 +15,7 @@ import android.widget.TextView;
 import com.undabot.weatherapp.R;
 import com.undabot.weatherapp.data.utils.SharedPrefsUtils;
 import com.undabot.weatherapp.data.utils.TextFormatUtils;
-import com.undabot.weatherapp.ui.adapters.CityListAdapter;
+import com.undabot.weatherapp.ui.adapters.EditCityListAdapter;
 import com.undabot.weatherapp.ui.adapters.PlacesPredictionAdapter;
 import com.undabot.weatherapp.ui.custom.DelayAutoCompleteTextView;
 
@@ -30,7 +31,7 @@ public class EditCityListActivity extends ActionBarActivity {
 	@InjectView(R.id.lv_edit_activity_list) ListView lvCityList;
 
 	private ArrayList<String> mCityList;
-	private CityListAdapter cityListAdapter;
+	private EditCityListAdapter editCityListAdapter;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -43,9 +44,14 @@ public class EditCityListActivity extends ActionBarActivity {
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
 		mCityList = SharedPrefsUtils.getCityList();
-		cityListAdapter = new CityListAdapter(getApplicationContext(), mCityList);
-		lvCityList.setAdapter(cityListAdapter);
+		editCityListAdapter = new EditCityListAdapter(getApplicationContext(), mCityList);
+		lvCityList.setAdapter(editCityListAdapter);
 
+	}
+
+	@Override
+	public void onBackPressed() {
+		NavUtils.navigateUpFromSameTask(this);
 	}
 
 	/**
@@ -68,7 +74,7 @@ public class EditCityListActivity extends ActionBarActivity {
 					public void onClick(DialogInterface dialog, int whichButton) {
 						mCityList.add(TextFormatUtils.capitalizeFirstLetterInEachWord(input.getText().toString()));
 						SharedPrefsUtils.setCityList(mCityList);
-						cityListAdapter.notifyDataSetChanged();
+						editCityListAdapter.notifyDataSetChanged();
 					}
 				}).setNegativeButton(R.string.text_cancel, null).show();
 
@@ -77,7 +83,6 @@ public class EditCityListActivity extends ActionBarActivity {
 
 		//Create onTextChangeListener
 		input.addTextChangedListener(new TextWatcher() {
-			String inputText;
 
 			@Override
 			public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -89,7 +94,7 @@ public class EditCityListActivity extends ActionBarActivity {
 
 			@Override
 			public void afterTextChanged(Editable input) {
-				inputText = TextFormatUtils.capitalizeFirstLetterInEachWord(input.toString());
+				String inputText = TextFormatUtils.capitalizeFirstLetterInEachWord(input.toString());
 				//Check if city is already in list or length<3 and disable OK button
 				if (mCityList.contains(inputText)) {
 					dialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(false);

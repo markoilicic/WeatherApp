@@ -16,26 +16,26 @@ public class ApiServiceManager {
 
 	private static final int HTTP_DISC_CACHE_SIZE = 10 * 1024 * 1024; //10MB
 
-	private OpenWeatherService mOpenWeatherService;
-	private GooglePlacesService mGooglePlacesService;
+	private OpenWeatherAPIService mOpenWeatherService;
+	private GooglePlacesAPIService mGooglePlacesService;
 
 	public ApiServiceManager() {
 		RestAdapter restAdapter = new RestAdapter.Builder()
 				.setEndpoint(ApiConstants.OPEN_WEATHER_BASE_URL)
 				.setClient(new OkClient(createOkHttpClient((Application) App.getAppContext())))
-				.setRequestInterceptor(new ApiHeaders(ApiHeaders.HEADER_TYPE_OPEN_WEATHER_SERVICE))
+				.setRequestInterceptor(new OpenWeatherHeader())
 				.setLogLevel(RestAdapter.LogLevel.FULL)
 				.build();
 
-		mOpenWeatherService = restAdapter.create(OpenWeatherService.class);
+		mOpenWeatherService = restAdapter.create(OpenWeatherAPIService.class);
 
 		restAdapter = new RestAdapter.Builder()
 				.setEndpoint(ApiConstants.GOOGLE_PLACES_BASE_URL)
-				.setRequestInterceptor(new ApiHeaders(ApiHeaders.HEADER_TYPE_PLACES_SERVICE))
+				.setRequestInterceptor(new GooglePlacesHeader())
 				.setLogLevel(RestAdapter.LogLevel.FULL)
 				.build();
 
-		mGooglePlacesService = restAdapter.create(GooglePlacesService.class);
+		mGooglePlacesService = restAdapter.create(GooglePlacesAPIService.class);
 	}
 
 	/**
@@ -55,11 +55,11 @@ public class ApiServiceManager {
 		return okHttpClient;
 	}
 
-	public OpenWeatherService getApiService() {
+	public OpenWeatherAPIService getOpenWeatherApiService() {
 		return mOpenWeatherService;
 	}
 
-	public GooglePlacesService getGooglePlacesApiService() {
+	public GooglePlacesAPIService getGooglePlacesApiService() {
 		return mGooglePlacesService;
 	}
 

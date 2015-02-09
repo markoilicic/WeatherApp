@@ -13,11 +13,6 @@ public class MainConditions {
 	@SerializedName("pressure") private float pressure;
 
 	public MainConditions() {
-		this.temperature = (float) -1;
-		this.humidity = (float) -1;
-		this.tempMin = (float) -1;
-		this.tempMax = (float) -1;
-		this.pressure = (float) -1;
 		this.formatPattern = new DecimalFormat("#.#");
 	}
 

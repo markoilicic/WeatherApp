@@ -11,13 +11,6 @@ public class Weather {
 	@SerializedName("description") private String description;
 	@SerializedName("icon") private String iconName;
 
-	public Weather() {
-		this.id = (long) -1;
-		this.mainCondition = "";
-		this.description = "";
-		this.iconName = "";
-	}
-
 	public long getId() {
 		return id;
 	}

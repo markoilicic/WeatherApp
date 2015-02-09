@@ -29,8 +29,8 @@
         android:layout_centerHorizontal="true"
         fab:fab_colorNormal="@color/floating_btn_normal"
         fab:fab_colorPressed="@color/floating_btn_pressed"
-        fab:fab_icon="@android:drawable/ic_input_add"
+        fab:fab_icon="@drawable/ic_plus"
         fab:fab_plusIconColor="@color/white"
-        android:onClick="onAddCityClick"/>
+        fab:fab_size="mini" />
 
 </RelativeLayout>

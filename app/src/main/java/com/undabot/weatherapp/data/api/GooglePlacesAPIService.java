@@ -6,7 +6,7 @@ import retrofit.http.GET;
 import retrofit.http.Query;
 import rx.Observable;
 
-public interface GooglePlacesService {
+public interface GooglePlacesAPIService {
 
 	@GET("/json")
 	public PlacesAutoCompleteResponse getPlacesPrediction(@Query("input") String inputText);

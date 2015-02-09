@@ -22,7 +22,5 @@
     <color name="drawer_background">#FFF</color>
     <color name="drawer_header_text">#FFF</color>
     <color name="drawer_header_background">#FF5722</color>
-    <color name="drawer_list_circle">#B6B6B6</color>
-    <color name="drawer_selected_item">#DDD</color>
 
 </resources>

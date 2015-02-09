@@ -2,7 +2,9 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content"
+    android:paddingLeft="@dimen/general_padding"
+    android:paddingRight="@dimen/general_padding">
 
     <TextView
         android:id="@+id/tv_list_day_name"
@@ -27,10 +29,11 @@
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
         android:layout_gravity="center_vertical"
-        android:layout_toEndOf="@+id/iv_list_weather_icon"
         android:layout_toRightOf="@+id/iv_list_weather_icon"
         android:textColor="@color/primary"
-        tools:text="Light rain" />
+        tools:text="Light rain"
+        android:layout_toLeftOf="@+id/tv_list_temp"
+        android:layout_toStartOf="@+id/tv_list_temp" />
 
     <TextView
         android:id="@+id/tv_list_temp"
@@ -38,6 +41,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
+        android:layout_marginLeft="@dimen/general_text_spacing"
         android:layout_marginEnd="@dimen/forecast_list_temp_right_margin"
         android:layout_marginRight="@dimen/forecast_list_temp_right_margin"
         android:layout_toLeftOf="@+id/tv_list_temp_range"

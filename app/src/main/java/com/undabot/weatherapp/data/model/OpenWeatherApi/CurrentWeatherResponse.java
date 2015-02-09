@@ -26,11 +26,6 @@ public class CurrentWeatherResponse {
 		this.weatherList = new ArrayList<Weather>();
 		this.mainConditions = new MainConditions();
 		this.wind = new Wind();
-		this.timeStamp = (long) -1;
-		this.cityId = (long) -1;
-		this.cityName = "";
-		this.responseCode = -1;
-		this.errorMsg = "";
 	}
 
 	public Coordinates getCoordinates() {
