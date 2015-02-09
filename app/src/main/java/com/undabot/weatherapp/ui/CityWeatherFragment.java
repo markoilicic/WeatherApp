@@ -31,20 +31,31 @@ import timber.log.Timber;
 
 public class CityWeatherFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
 
+	public static final String EXTRA_CITY_NAME = "city";
 	private static final int FORECAST_DAYS_NUMBER = 7;
 
 	@InjectView(R.id.swipe_refresh_layout) SwipeRefreshLayout mSwipeRefreshLayout;
 	@InjectView(R.id.error_layout) TextView errorLayout;
-
 	@InjectView(R.id.rv_forecast_weather) RecyclerView rvWeather;
 
 	private String mCityName;
 	private ResponseEnvelope mResponseEnvelope;
-
 	private OpenWeatherAPIService mOpenWeatherService;
 
-	public CityWeatherFragment(String cityName) {
-		this.mCityName = cityName;
+	public static CityWeatherFragment getInstance(String cityName) {
+		CityWeatherFragment fragment = new CityWeatherFragment();
+
+		Bundle args = new Bundle();
+		args.putString(EXTRA_CITY_NAME, cityName);
+		fragment.setArguments(args);
+
+		return fragment;
+	}
+
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		mCityName = getArguments().getString(EXTRA_CITY_NAME);
 	}
 
 	@Override

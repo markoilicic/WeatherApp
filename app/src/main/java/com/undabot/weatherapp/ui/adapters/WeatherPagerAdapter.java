@@ -24,8 +24,7 @@ public class WeatherPagerAdapter extends FragmentStatePagerAdapter {
 
 	@Override
 	public Fragment getItem(int position) {
-		return new CityWeatherFragment(mCityList.get(position));
+		return CityWeatherFragment.getInstance(mCityList.get(position));
 	}
-
 
 }
