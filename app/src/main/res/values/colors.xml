@@ -14,8 +14,8 @@
     <color name="black">#000</color>
     <color name="warning">#F50</color>
 
-    <!-- FLoating button colors -->
-    <color name="floating_btn_normal">#FF5722</color>
+    <!-- Floating button colors -->
+    <color name="floating_btn_normal">#1976D2</color>
     <color name="floating_btn_pressed">#FF7022</color>
 
     <!-- Drawer -->

@@ -34,7 +34,6 @@ public class CityWeatherActivity extends ActionBarActivity {
 	@InjectView(R.id.drawer_fragment) View mDrawerView;
 	@InjectView(R.id.lv_drawer_city_list) ListView lvDrawerCityList;
 	@InjectView(R.id.view_pager) ViewPager mPager;
-	@InjectView(R.id.empty_city_list_layout) View mEmptyListLayout;
 
 	private ActionBarDrawerToggle mDrawerToggle;
 
@@ -77,7 +76,7 @@ public class CityWeatherActivity extends ActionBarActivity {
 	}
 
 	private void setupViewPager() {
-		mPagerAdapter = new WeatherPagerAdapter(getSupportFragmentManager(), createCityWeatherFragmentList());
+		mPagerAdapter = new WeatherPagerAdapter(getSupportFragmentManager(), mCityList);
 		mPager.setAdapter(mPagerAdapter);
 		mPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
 
@@ -123,12 +122,12 @@ public class CityWeatherActivity extends ActionBarActivity {
 				mDrawerLayout.closeDrawer(Gravity.LEFT);
 			}
 		});
+		lvDrawerCityList.setEmptyView(findViewById(R.id.empty_city_list_layout));
+
 		//Show drawer if list is empty
-		if (mCityList.size() == 0) {
-			showEmptyListLayout(true);
+		if (mCityList.isEmpty()) {
 			mDrawerLayout.openDrawer(mDrawerView);
 		} else {
-			showEmptyListLayout(false);
 			// Set drawer last selected item
 			lvDrawerCityList.setItemChecked(mSelectedPosition.get(), true);
 			// Set viewPager to last selected position
@@ -136,26 +135,6 @@ public class CityWeatherActivity extends ActionBarActivity {
 		}
 
 	}
-
-	private ArrayList<CityWeatherFragment> createCityWeatherFragmentList() {
-		ArrayList<CityWeatherFragment> cityWeatherFragmentList = new ArrayList<>();
-
-		for (String cityName : mCityList) {
-			cityWeatherFragmentList.add(new CityWeatherFragment(cityName));
-		}
-		return cityWeatherFragmentList;
-	}
-
-	public void showEmptyListLayout(boolean isShown) {
-		if (isShown) {
-			mEmptyListLayout.setVisibility(View.VISIBLE);
-			lvDrawerCityList.setVisibility(View.GONE);
-		} else {
-			mEmptyListLayout.setVisibility(View.GONE);
-			lvDrawerCityList.setVisibility(View.VISIBLE);
-		}
-	}
-
 
 	@OnClick(R.id.btn_drawer_edit_city_list)
 	public void onEditCityListClick() {

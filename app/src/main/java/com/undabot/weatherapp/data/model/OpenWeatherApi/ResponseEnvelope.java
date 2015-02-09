@@ -19,7 +19,7 @@ public class ResponseEnvelope {
 		this.mCurrentWeatherResponse = currentWeatherResponse;
 		this.mForecastWeatherResponse = forecastWeatherResponse;
 		this.mCurrentWeatherResponseCode = mCurrentWeatherResponse.getResponseCode();
-		this.mForecastWeatherResponseCode = mCurrentWeatherResponse.getResponseCode();
+		this.mForecastWeatherResponseCode = mForecastWeatherResponse.getResponseCode();
 		handleErrors();
 	}
 
@@ -34,7 +34,7 @@ public class ResponseEnvelope {
 	public void handleErrors() {
 		//Check if any response 'cod' is not 200
 		if (mCurrentWeatherResponseCode != 200 || mForecastWeatherResponseCode != 200) {
-			if (mCurrentWeatherResponseCode == 404 || mForecastWeatherResponseCode != 404) {
+			if (mCurrentWeatherResponseCode == 404 || mForecastWeatherResponseCode == 404) {
 				mErrorMessage = App.getAppContext().getString(R.string.error_city_not_found);
 			} else {
 				mErrorMessage = App.getAppContext().getString(R.string.error_server_unknown);

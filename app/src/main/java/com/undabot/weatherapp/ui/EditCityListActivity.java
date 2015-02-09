@@ -46,6 +46,7 @@ public class EditCityListActivity extends ActionBarActivity {
 		mCityList = SharedPrefsUtils.getCityList();
 		editCityListAdapter = new EditCityListAdapter(getApplicationContext(), mCityList);
 		lvCityList.setAdapter(editCityListAdapter);
+		lvCityList.setEmptyView(findViewById(R.id.empty_city_list_layout));
 
 	}
 

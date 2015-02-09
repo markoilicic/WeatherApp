@@ -98,7 +98,7 @@ public class CityWeatherFragment extends Fragment implements SwipeRefreshLayout.
 		errorLayout.setVisibility(View.GONE);
 	}
 
-	private void setOnRefreshSucessViews() {
+	private void setOnRefreshSuccessViews() {
 		mSwipeRefreshLayout.setRefreshing(false);
 		rvWeather.setAlpha(1f);
 		rvWeather.setVisibility(View.VISIBLE);
@@ -154,7 +154,7 @@ public class CityWeatherFragment extends Fragment implements SwipeRefreshLayout.
 					mResponseEnvelope.getForecastWeatherList());
 			rvWeather.setAdapter(recyclerWeatherAdapter);
 
-			setOnRefreshSucessViews();
+			setOnRefreshSuccessViews();
 		}
 	}
 

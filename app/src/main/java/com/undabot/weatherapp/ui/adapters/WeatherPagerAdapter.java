@@ -10,21 +10,21 @@ import java.util.ArrayList;
 
 public class WeatherPagerAdapter extends FragmentStatePagerAdapter {
 
-	private ArrayList<CityWeatherFragment> mCityWeatherFragmentList;
+	private ArrayList<String> mCityList;
 
-	public WeatherPagerAdapter(FragmentManager fm, ArrayList<CityWeatherFragment> cityWeatherFragmentList) {
+	public WeatherPagerAdapter(FragmentManager fm, ArrayList<String> cityList) {
 		super(fm);
-		this.mCityWeatherFragmentList = cityWeatherFragmentList;
+		this.mCityList = cityList;
 	}
 
 	@Override
 	public int getCount() {
-		return mCityWeatherFragmentList.size();
+		return mCityList.size();
 	}
 
 	@Override
 	public Fragment getItem(int position) {
-		return mCityWeatherFragmentList.get(position);
+		return new CityWeatherFragment(mCityList.get(position));
 	}
 
 
