@@ -5,7 +5,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     tools:context="com.undabot.weatherapp.ui.EditCityListActivity">
 
     <include
@@ -21,16 +20,20 @@
         android:dividerHeight="0.2dp"
         android:scrollbars="none" />
 
+    <include
+        android:id="@+id/empty_city_list_layout"
+        layout="@layout/empty_city_list_layout"
+        android:visibility="gone" />
+
     <com.getbase.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab_add_city"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/lv_edit_activity_list"
+        android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         fab:fab_colorNormal="@color/floating_btn_normal"
         fab:fab_colorPressed="@color/floating_btn_pressed"
         fab:fab_icon="@drawable/ic_plus"
-        fab:fab_plusIconColor="@color/white"
-        fab:fab_size="mini" />
+        fab:fab_plusIconColor="@color/white" />
 
 </RelativeLayout>
