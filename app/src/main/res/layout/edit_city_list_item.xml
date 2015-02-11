@@ -3,6 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="@color/white"
+    android:descendantFocusability="blocksDescendants"
     android:paddingBottom="@dimen/general_padding"
     android:paddingTop="@dimen/general_padding">
 
@@ -13,6 +15,7 @@
         android:layout_alignParentLeft="true"
         android:layout_centerVertical="true"
         android:layout_marginLeft="@dimen/general_padding"
+        android:descendantFocusability="blocksDescendants"
         android:textColor="@color/primary_dark"
         tools:text="City name" />
 
@@ -24,5 +27,7 @@
         android:layout_centerVertical="true"
         android:layout_marginRight="@dimen/general_padding"
         android:background="@android:color/transparent"
+        android:descendantFocusability="blocksDescendants"
         android:src="@drawable/ic_delete_selector" />
+
 </RelativeLayout>

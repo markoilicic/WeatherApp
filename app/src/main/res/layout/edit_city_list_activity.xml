@@ -11,7 +11,7 @@
         android:id="@+id/toolbar"
         layout="@layout/toolbar" />
 
-    <ListView
+    <com.undabot.weatherapp.ui.custom.DynamicListView
         android:id="@+id/lv_edit_activity_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

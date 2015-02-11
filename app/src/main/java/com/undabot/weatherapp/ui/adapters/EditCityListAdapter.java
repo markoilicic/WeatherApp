@@ -13,23 +13,37 @@ import com.undabot.weatherapp.data.prefs.IntPreference;
 import com.undabot.weatherapp.data.utils.SharedPrefsUtils;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
+import timber.log.Timber;
 
 public class EditCityListAdapter extends ArrayAdapter<String> {
 
+	final int INVALID_ID = -1;
+
 	private Context mContext;
 	private ArrayList<String> mCityList;
+	private HashMap<String, Integer> mIdMap = new HashMap<>();
 
 	public EditCityListAdapter(Context context, ArrayList<String> cityList) {
 		super(context, R.layout.edit_city_list_item, cityList);
 		this.mContext = context;
 		this.mCityList = cityList;
+
+		for (int i = 0; i < cityList.size(); ++i) {
+			mIdMap.put(cityList.get(i), i);
+		}
 	}
 
+	/*	NOTE:
+		Add 'android:descendantFocusability="blocksDescendants"' to every view in list item layout when using DynamicListView,
+		because Motion.ACTION_DOWN won't be triggered and drag'n'drop won't work...
+	 */
 	@Override
 	public View getView(final int position, View convertView, ViewGroup parent) {
+		Timber.d("getView");
 		final ViewHolder holder;
 		if (convertView == null) {
 			convertView = LayoutInflater.from(mContext).inflate(R.layout.edit_city_list_item, null);
@@ -40,7 +54,6 @@ public class EditCityListAdapter extends ArrayAdapter<String> {
 		}
 
 		holder.cityName.setText(mCityList.get(position));
-
 		holder.btnDelete.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -57,6 +70,31 @@ public class EditCityListAdapter extends ArrayAdapter<String> {
 		});
 
 		return convertView;
+	}
+
+	@Override
+	public long getItemId(int position) {
+		if (position < 0 || position >= mIdMap.size()) {
+			return INVALID_ID;
+		}
+		String item = getItem(position);
+		return mIdMap.get(item);
+	}
+
+	/**
+	 * Initially, this should always return true, but in lollipop it should return false
+	 */
+	@Override
+	public boolean hasStableIds() {
+		return android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.LOLLIPOP;
+	}
+
+	@Override
+	public void notifyDataSetChanged() {
+		super.notifyDataSetChanged();
+		// When reordering is done, DynamicListView calls adapter.notifyDataSetChanged()
+		// So, save the newly ordered list in shared prefs
+		SharedPrefsUtils.setCityList(mCityList);
 	}
 
 	static class ViewHolder {
