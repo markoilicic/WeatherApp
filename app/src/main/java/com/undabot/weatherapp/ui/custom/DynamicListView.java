@@ -38,6 +38,8 @@ import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
 
+import com.undabot.weatherapp.data.prefs.IntPreference;
+import com.undabot.weatherapp.data.utils.SharedPrefsUtils;
 import com.undabot.weatherapp.ui.adapters.EditCityListAdapter;
 
 import java.util.ArrayList;
@@ -98,6 +100,9 @@ public class DynamicListView extends ListView {
 
 	public ArrayList<String> mItemList;
 
+	private IntPreference mDrawerSelectedItem;
+	private int mMobileItemOriginalPosition;
+
 	private int mBorderColor = Color.BLACK;
 	private int mLastEventY = -1;
 	private int mDownY = -1;
@@ -122,12 +127,12 @@ public class DynamicListView extends ListView {
 					int position = pointToPosition(mDownX, mDownY);
 					int itemNum = position - getFirstVisiblePosition();
 
-					Timber.d("onItemLongClickListener: " + " pos=" + pos + ", Position=" + position + " View = " + getChildAt(itemNum));
-					Timber.d("getChildCount = " + getChildCount());
 					View selectedView = getChildAt(itemNum);
 					mMobileItemId = getAdapter().getItemId(position);
 					mHoverCell = getAndAddHoverView(selectedView);
 					selectedView.setVisibility(INVISIBLE);
+
+					mMobileItemOriginalPosition = position;
 
 					mCellIsMobile = true;
 
@@ -246,6 +251,7 @@ public class DynamicListView extends ListView {
 		setOnScrollListener(mScrollListener);
 		DisplayMetrics metrics = context.getResources().getDisplayMetrics();
 		mSmoothScrollAmountAtEdge = (int) (SMOOTH_SCROLL_AMOUNT_AT_EDGE / metrics.density);
+		mDrawerSelectedItem = new IntPreference(SharedPrefsUtils.getSharedPreferences(), SharedPrefsUtils.KEY_SELECTED_POSITION);
 		Timber.d("init DynamicListView");
 	}
 
@@ -525,6 +531,8 @@ public class DynamicListView extends ListView {
 
 			mHoverCellCurrentBounds.offsetTo(mHoverCellOriginalBounds.left, mobileView.getTop());
 
+			handleDrawerSelectedPositionChange(mMobileItemOriginalPosition, getPositionForID(mMobileItemId));
+
 			ObjectAnimator hoverViewAnimator = ObjectAnimator.ofObject(mHoverCell, "bounds",
 					sBoundEvaluator, mHoverCellCurrentBounds);
 			hoverViewAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
@@ -608,6 +616,23 @@ public class DynamicListView extends ListView {
 		}
 
 		return false;
+	}
+
+	/**
+	 * This method handle the Drawers selected item position change
+	 *
+	 * @param originalPosition original position of moved item
+	 * @param newPosition      new position of moved item
+	 */
+	private void handleDrawerSelectedPositionChange(int originalPosition, int newPosition) {
+		if (originalPosition < mDrawerSelectedItem.get() && newPosition >= mDrawerSelectedItem.get()) {
+			mDrawerSelectedItem.set(mDrawerSelectedItem.get() - 1);
+		} else if (originalPosition > mDrawerSelectedItem.get() && newPosition <= mDrawerSelectedItem.get()) {
+			mDrawerSelectedItem.set(mDrawerSelectedItem.get() + 1);
+		} else if (originalPosition == mDrawerSelectedItem.get()) {
+			mDrawerSelectedItem.set(newPosition);
+		}
+
 	}
 
 	public void setItemList(ArrayList<String> itemList) {

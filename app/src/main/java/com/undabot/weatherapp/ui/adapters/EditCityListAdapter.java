@@ -81,9 +81,6 @@ public class EditCityListAdapter extends ArrayAdapter<String> {
 		return mIdMap.get(item);
 	}
 
-	/**
-	 * Initially, this should always return true, but in lollipop it should return false
-	 */
 	@Override
 	public boolean hasStableIds() {
 		return android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.LOLLIPOP;
