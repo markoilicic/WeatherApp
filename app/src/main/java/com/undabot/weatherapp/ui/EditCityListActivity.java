@@ -9,7 +9,6 @@ import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import com.undabot.weatherapp.R;
@@ -18,6 +17,7 @@ import com.undabot.weatherapp.data.utils.TextFormatUtils;
 import com.undabot.weatherapp.ui.adapters.EditCityListAdapter;
 import com.undabot.weatherapp.ui.adapters.PlacesPredictionAdapter;
 import com.undabot.weatherapp.ui.custom.DelayAutoCompleteTextView;
+import com.undabot.weatherapp.ui.custom.DynamicListView;
 
 import java.util.ArrayList;
 
@@ -28,7 +28,7 @@ import butterknife.OnClick;
 public class EditCityListActivity extends ActionBarActivity {
 
 	@InjectView(R.id.toolbar) Toolbar toolbar;
-	@InjectView(R.id.lv_edit_activity_list) ListView lvCityList;
+	@InjectView(R.id.lv_edit_activity_list) DynamicListView lvCityList;
 
 	private ArrayList<String> mCityList;
 	private EditCityListAdapter editCityListAdapter;
@@ -44,7 +44,12 @@ public class EditCityListActivity extends ActionBarActivity {
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
 		mCityList = SharedPrefsUtils.getCityList();
+
+		// Add city list to adapter and DynamicListView
 		editCityListAdapter = new EditCityListAdapter(getApplicationContext(), mCityList);
+		lvCityList.setItemList(mCityList);
+
+		lvCityList.setSelectedItemBorderColor(getResources().getColor(R.color.primary));
 		lvCityList.setAdapter(editCityListAdapter);
 		lvCityList.setEmptyView(findViewById(R.id.empty_city_list_layout));
 
