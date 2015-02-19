@@ -1,7 +1,6 @@
 package com.undabot.weatherapp.ui;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v4.view.PagerAdapter;
@@ -15,13 +14,18 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
+import com.undabot.weatherapp.App;
 import com.undabot.weatherapp.R;
 import com.undabot.weatherapp.data.prefs.IntPreference;
-import com.undabot.weatherapp.data.utils.SharedPrefsUtils;
+import com.undabot.weatherapp.data.prefs.StringArrayPreference;
+import com.undabot.weatherapp.modules.qualifiers.CityList;
+import com.undabot.weatherapp.modules.qualifiers.SelectedPosition;
 import com.undabot.weatherapp.ui.adapters.DrawerCityListAdapter;
 import com.undabot.weatherapp.ui.adapters.WeatherPagerAdapter;
 
 import java.util.ArrayList;
+
+import javax.inject.Inject;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -35,11 +39,12 @@ public class CityWeatherActivity extends ActionBarActivity {
 	@InjectView(R.id.lv_drawer_city_list) ListView lvDrawerCityList;
 	@InjectView(R.id.view_pager) ViewPager mPager;
 
+	@Inject @SelectedPosition IntPreference mSelectedPosition;
+	@Inject @CityList StringArrayPreference mCityListPref;
+
 	private ActionBarDrawerToggle mDrawerToggle;
-
-	private IntPreference mSelectedPosition;
-
 	private ArrayList<String> mCityList;
+
 	private DrawerCityListAdapter mDrawerAdapter;
 	private PagerAdapter mPagerAdapter;
 
@@ -53,10 +58,10 @@ public class CityWeatherActivity extends ActionBarActivity {
 		setSupportActionBar(mToolbar);
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-		//Get shared prefs
-		SharedPreferences sharedPreferences = SharedPrefsUtils.getSharedPreferences();
-		mSelectedPosition = new IntPreference(sharedPreferences, SharedPrefsUtils.KEY_SELECTED_POSITION, 0);
-		mCityList = SharedPrefsUtils.getCityList();
+		//Add to objGraph
+		App.get().inject(this);
+
+		mCityList = mCityListPref.get();
 
 		setupViewPager();
 		setupDrawer();

@@ -1,8 +1,14 @@
 package com.undabot.weatherapp.data.api;
 
+import javax.inject.Inject;
+
 import retrofit.RequestInterceptor;
 
 public class OpenWeatherHeader implements RequestInterceptor {
+
+	@Inject
+	public OpenWeatherHeader() {
+	}
 
 	@Override
 	public void intercept(RequestFacade request) {
