@@ -16,7 +16,6 @@ import dagger.Provides;
 		},
 		injects = {
 				App.class,
-				//CityWeatherActivity.class
 		}
 )
 public final class MainModule {

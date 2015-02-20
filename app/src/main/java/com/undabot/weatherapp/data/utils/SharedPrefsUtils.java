@@ -10,16 +10,12 @@ import com.undabot.weatherapp.data.prefs.StringPreference;
 
 import java.util.ArrayList;
 
-import javax.inject.Inject;
-
 public class SharedPrefsUtils {
 
 	public static final String KEY_CITY_LIST = "city_list";
 	private static StringPreference mCityList = new StringPreference(getSharedPreferences(), KEY_CITY_LIST, "[]");
 	public static final String KEY_SELECTED_POSITION = "drawer_selected_position";
 	private static Gson mGson = new Gson();
-
-	@Inject
 
 	public static SharedPreferences getSharedPreferences() {
 		Context context = App.getAppContext();

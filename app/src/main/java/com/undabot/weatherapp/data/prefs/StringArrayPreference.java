@@ -25,10 +25,26 @@ public class StringArrayPreference {
 		this.mStringPreference = new StringPreference(preferences, key, defaultValue);
 	}
 
-	public ArrayList<String> get() {
+	public ArrayList<String> getList() {
 		return gson.fromJson(mStringPreference.get(),
 				new TypeToken<ArrayList<String>>() {
 				}.getType());
+	}
+
+	public void addItem(String value) {
+		ArrayList<String> list = getList();
+		list.add(value);
+		set(list);
+	}
+
+	public void removeItem(int position) {
+		ArrayList<String> list = getList();
+		list.remove(position);
+		set(list);
+	}
+
+	public String getItem(int position) {
+		return getList().get(position);
 	}
 
 	public boolean isSet() {

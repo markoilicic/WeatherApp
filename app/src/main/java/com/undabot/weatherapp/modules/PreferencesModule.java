@@ -5,7 +5,6 @@ import android.content.SharedPreferences;
 
 import com.undabot.weatherapp.data.prefs.IntPreference;
 import com.undabot.weatherapp.data.prefs.StringArrayPreference;
-import com.undabot.weatherapp.data.utils.SharedPrefsUtils;
 import com.undabot.weatherapp.modules.qualifiers.ApplicationContext;
 import com.undabot.weatherapp.modules.qualifiers.CityList;
 import com.undabot.weatherapp.modules.qualifiers.SelectedPosition;
@@ -19,9 +18,8 @@ import dagger.Provides;
 
 @Module(
 		injects = {
-				SharedPrefsUtils.class,
 				CityWeatherActivity.class,
-				EditCityListActivity.class
+				EditCityListActivity.class,
 		},
 		library = true,
 		complete = false

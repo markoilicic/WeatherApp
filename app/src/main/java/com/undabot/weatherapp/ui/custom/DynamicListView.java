@@ -373,16 +373,13 @@ public class DynamicListView extends ListView {
 
 	@Override
 	public boolean onTouchEvent(MotionEvent event) {
-		Timber.d("onTouchEvent");
 		switch (event.getAction() & MotionEvent.ACTION_MASK) {
 			case MotionEvent.ACTION_DOWN:
-				Timber.d("ACTION_DOWN");
 				mDownX = (int) event.getX();
 				mDownY = (int) event.getY();
 				mActivePointerId = event.getPointerId(0);
 				break;
 			case MotionEvent.ACTION_MOVE:
-				Timber.d("ACTION_MOVE");
 				if (mActivePointerId == INVALID_POINTER_ID) {
 					break;
 				}
@@ -407,15 +404,12 @@ public class DynamicListView extends ListView {
 				}
 				break;
 			case MotionEvent.ACTION_UP:
-				Timber.d("ACTION_UP");
 				touchEventsEnded();
 				break;
 			case MotionEvent.ACTION_CANCEL:
-				Timber.d("ACTION_CANCEL");
 				touchEventsCancelled();
 				break;
 			case MotionEvent.ACTION_POINTER_UP:
-				Timber.d("ACTION_POINTER_UP");
 				/* If a multitouch event took place and the original touch dictating
 				 * the movement of the hover cell has ended, then the dragging event
                  * ends and the hover cell is animated to its corresponding position

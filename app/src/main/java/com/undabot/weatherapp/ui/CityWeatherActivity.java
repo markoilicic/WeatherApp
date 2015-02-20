@@ -61,7 +61,7 @@ public class CityWeatherActivity extends ActionBarActivity {
 		//Add to objGraph
 		App.get().inject(this);
 
-		mCityList = mCityListPref.get();
+		mCityList = mCityListPref.getList();
 
 		setupViewPager();
 		setupDrawer();
