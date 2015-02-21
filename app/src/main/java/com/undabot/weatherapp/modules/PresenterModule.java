@@ -1,5 +1,6 @@
 package com.undabot.weatherapp.modules;
 
+import com.undabot.weatherapp.data.api.GooglePlacesAPIService;
 import com.undabot.weatherapp.data.prefs.IntPreference;
 import com.undabot.weatherapp.data.prefs.StringArrayPreference;
 import com.undabot.weatherapp.modules.qualifiers.CityList;
@@ -13,19 +14,22 @@ import dagger.Module;
 import dagger.Provides;
 
 @Module(
+		//TODO library = true should be removed
+		library = true,
 		addsTo = MainModule.class,
 		injects = {
 				BaseActivity.class,
-				EditCityListActivity.class
-		},
-		complete = false,
-		library = true
+				EditCityListActivity.class,
+		}
+
 )
 public final class PresenterModule {
 
 	@Provides
-	public EditCityListPresenter provideEditCityListPresenter(@CityList StringArrayPreference cityList, @SelectedPosition IntPreference selectedItem) {
-		return new EditCityListPresenterImpl(cityList, selectedItem);
+	public EditCityListPresenter provideEditCityListPresenter(@CityList StringArrayPreference cityList,
+															  @SelectedPosition IntPreference selectedItem,
+															  GooglePlacesAPIService googlePlacesAPIService) {
+		return new EditCityListPresenterImpl(cityList, selectedItem, googlePlacesAPIService);
 	}
 
 }

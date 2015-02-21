@@ -15,7 +15,8 @@ public class BaseActivity extends ActionBarActivity {
 
 	private ObjectGraph scopedObjectGraph;
 
-	@Override protected void onCreate(Bundle savedInstanceState) {
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
 		App app = App.from(this);
@@ -32,7 +33,8 @@ public class BaseActivity extends ActionBarActivity {
 		scopedObjectGraph.inject(object);
 	}
 
-	@Override protected void onDestroy() {
+	@Override
+	protected void onDestroy() {
 		scopedObjectGraph = null;
 		super.onDestroy();
 	}

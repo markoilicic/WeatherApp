@@ -38,13 +38,9 @@ import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
 
-import com.undabot.weatherapp.data.prefs.IntPreference;
-import com.undabot.weatherapp.data.utils.SharedPrefsUtils;
 import com.undabot.weatherapp.ui.adapters.EditCityListAdapter;
 
 import java.util.ArrayList;
-
-import timber.log.Timber;
 
 /**
  * The dynamic listview is an extension of listview that supports cell dragging
@@ -98,10 +94,10 @@ public class DynamicListView extends ListView {
 	private final int INVALID_POINTER_ID = -1;
 	private int mActivePointerId = INVALID_POINTER_ID;
 
-	public ArrayList<String> mItemList;
+	public ArrayList mItemList;
 
-	private IntPreference mDrawerSelectedItem;
 	private int mMobileItemOriginalPosition;
+	private OnReorderFinishedListener mOnReorderFinishedListener;
 
 	private int mBorderColor = Color.BLACK;
 	private int mLastEventY = -1;
@@ -121,7 +117,6 @@ public class DynamicListView extends ListView {
 			new OnItemLongClickListener() {
 				public boolean onItemLongClick(AdapterView<?> arg0, View arg1, int pos, long id) {
 
-					Timber.d("onItemLongClickListener: ");
 					mTotalOffset = 0;
 
 					int position = pointToPosition(mDownX, mDownY);
@@ -251,8 +246,6 @@ public class DynamicListView extends ListView {
 		setOnScrollListener(mScrollListener);
 		DisplayMetrics metrics = context.getResources().getDisplayMetrics();
 		mSmoothScrollAmountAtEdge = (int) (SMOOTH_SCROLL_AMOUNT_AT_EDGE / metrics.density);
-		mDrawerSelectedItem = new IntPreference(SharedPrefsUtils.getSharedPreferences(), SharedPrefsUtils.KEY_SELECTED_POSITION);
-		Timber.d("init DynamicListView");
 	}
 
 	/**
@@ -525,7 +518,10 @@ public class DynamicListView extends ListView {
 
 			mHoverCellCurrentBounds.offsetTo(mHoverCellOriginalBounds.left, mobileView.getTop());
 
-			handleDrawerSelectedPositionChange(mMobileItemOriginalPosition, getPositionForID(mMobileItemId));
+			// If onReorderFinished listener is set, it will notify item position change
+			if (mOnReorderFinishedListener != null) {
+				mOnReorderFinishedListener.onListItemsReordered(mMobileItemOriginalPosition, getPositionForID(mMobileItemId));
+			}
 
 			ObjectAnimator hoverViewAnimator = ObjectAnimator.ofObject(mHoverCell, "bounds",
 					sBoundEvaluator, mHoverCellCurrentBounds);
@@ -557,7 +553,6 @@ public class DynamicListView extends ListView {
 			touchEventsCancelled();
 		}
 
-		Timber.d("touchEventsEnded");
 	}
 
 	/**
@@ -613,24 +608,36 @@ public class DynamicListView extends ListView {
 	}
 
 	/**
-	 * This method handle the Drawers selected item position change
+	 * Set the same list used in adapter
 	 *
-	 * @param originalPosition original position of moved item
-	 * @param newPosition      new position of moved item
+	 * @param itemList list of items which is used in adapter
 	 */
-	private void handleDrawerSelectedPositionChange(int originalPosition, int newPosition) {
-		if (originalPosition < mDrawerSelectedItem.get() && newPosition >= mDrawerSelectedItem.get()) {
-			mDrawerSelectedItem.set(mDrawerSelectedItem.get() - 1);
-		} else if (originalPosition > mDrawerSelectedItem.get() && newPosition <= mDrawerSelectedItem.get()) {
-			mDrawerSelectedItem.set(mDrawerSelectedItem.get() + 1);
-		} else if (originalPosition == mDrawerSelectedItem.get()) {
-			mDrawerSelectedItem.set(newPosition);
-		}
-
+	public void setItemList(ArrayList itemList) {
+		mItemList = itemList;
 	}
 
-	public void setItemList(ArrayList<String> itemList) {
-		mItemList = itemList;
+	/**
+	 * Set listener for item finished reordering
+	 *
+	 * @param listener {@link com.undabot.weatherapp.ui.custom.DynamicListView.OnReorderFinishedListener}
+	 */
+	public void setOnReorderFinishedListener(OnReorderFinishedListener listener) {
+		this.mOnReorderFinishedListener = listener;
+	}
+
+	/**
+	 * Implement this when using {@link com.undabot.weatherapp.ui.custom.DynamicListView}
+	 * and you have to do some work if list is reordered
+	 * {@link com.undabot.weatherapp.ui.custom.DynamicListView}
+	 */
+	public interface OnReorderFinishedListener {
+		/**
+		 * Returns original and new position of moved item in {@link com.undabot.weatherapp.ui.custom.DynamicListView}
+		 *
+		 * @param oldPosition original item position
+		 * @param newPosition new item position
+		 */
+		public void onListItemsReordered(int oldPosition, int newPosition);
 	}
 
 }

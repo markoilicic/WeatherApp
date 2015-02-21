@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.widget.ArrayAdapter;
 import android.widget.Filter;
 
-import com.undabot.weatherapp.data.api.ApiServiceManager;
 import com.undabot.weatherapp.data.api.GooglePlacesAPIService;
 import com.undabot.weatherapp.data.model.GoogleApi.Prediction;
 
@@ -17,10 +16,10 @@ public class PlacesPredictionAdapter extends ArrayAdapter<String> {
 
 	private GooglePlacesAPIService mGooglePlacesService;
 
-	public PlacesPredictionAdapter(Activity context) {
+	public PlacesPredictionAdapter(Activity context, GooglePlacesAPIService googlePlacesAPIService) {
 		super(context, android.R.layout.simple_dropdown_item_1line);
-		predictions = new ArrayList<String>();
-		mGooglePlacesService = new ApiServiceManager().getGooglePlacesApiService();
+		this.predictions = new ArrayList<>();
+		this.mGooglePlacesService = googlePlacesAPIService;
 	}
 
 	@Override
@@ -35,7 +34,7 @@ public class PlacesPredictionAdapter extends ArrayAdapter<String> {
 
 	@Override
 	public Filter getFilter() {
-		Filter filter = new Filter() {
+		return new Filter() {
 
 			@Override
 			protected FilterResults performFiltering(CharSequence inputText) {
@@ -66,7 +65,6 @@ public class PlacesPredictionAdapter extends ArrayAdapter<String> {
 				}
 			}
 		};
-		return filter;
 	}
 
 }

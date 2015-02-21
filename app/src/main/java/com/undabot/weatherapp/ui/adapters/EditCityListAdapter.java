@@ -9,8 +9,6 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.undabot.weatherapp.R;
-import com.undabot.weatherapp.ui.util.ListOnDeleteItemClick;
-import com.undabot.weatherapp.ui.util.ListOnReorderListener;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -26,8 +24,7 @@ public class EditCityListAdapter extends ArrayAdapter<String> {
 	private ArrayList<String> mCityList;
 	private HashMap<String, Integer> mIdMap = new HashMap<>();
 
-	private ListOnDeleteItemClick onDeleteClickListener;
-	private ListOnReorderListener onReorderListener;
+	private OnDeleteItemListener onDeleteClickListener;
 
 	public EditCityListAdapter(Context context, ArrayList<String> cityList) {
 		super(context, R.layout.edit_city_list_item, cityList);
@@ -57,7 +54,7 @@ public class EditCityListAdapter extends ArrayAdapter<String> {
 			@Override
 			public void onClick(View v) {
 				if (onDeleteClickListener != null) {
-					onDeleteClickListener.onDeleteBtnClick(position);
+					onDeleteClickListener.onDeleteItemClicked(position);
 				}
 			}
 		});
@@ -80,16 +77,6 @@ public class EditCityListAdapter extends ArrayAdapter<String> {
 		return android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.LOLLIPOP;
 	}
 
-	@Override
-	public void notifyDataSetChanged() {
-		super.notifyDataSetChanged();
-		// When reordering is done, DynamicListView calls adapter.notifyDataSetChanged()
-		// So, make sure to save the newly ordered list
-		if (onReorderListener != null) {
-			onReorderListener.onReorder(mCityList);
-		}
-	}
-
 	/**
 	 * Call this method whenever you add/remove items in the list to refresh items ids
 	 */
@@ -100,12 +87,26 @@ public class EditCityListAdapter extends ArrayAdapter<String> {
 		}
 	}
 
-	public void setOnDeleteClickListener(ListOnDeleteItemClick onDeleteClickListener) {
+	/**
+	 * Set on delete item listener
+	 *
+	 * @param onDeleteClickListener {@link OnDeleteItemListener}
+	 */
+	public void setOnDeleteItemListener(OnDeleteItemListener onDeleteClickListener) {
 		this.onDeleteClickListener = onDeleteClickListener;
 	}
 
-	public void setOnReorderListener(ListOnReorderListener onReorderListener) {
-		this.onReorderListener = onReorderListener;
+	/**
+	 * Used for notify that item in list is deleted
+	 */
+	public interface OnDeleteItemListener {
+
+		/**
+		 * Returns deleted position
+		 *
+		 * @param position deleted item position
+		 */
+		public void onDeleteItemClicked(int position);
 	}
 
 	static class ViewHolder {

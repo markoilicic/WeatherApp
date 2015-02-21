@@ -1,12 +1,12 @@
 package com.undabot.weatherapp.ui;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 
 import com.undabot.weatherapp.R;
+import com.undabot.weatherapp.data.api.ApiServiceManager;
 import com.undabot.weatherapp.data.prefs.IntPreference;
 import com.undabot.weatherapp.data.prefs.StringArrayPreference;
 import com.undabot.weatherapp.modules.qualifiers.CityList;
@@ -15,8 +15,6 @@ import com.undabot.weatherapp.presenters.EditCityListPresenter;
 import com.undabot.weatherapp.presenters.EditCityListPresenterImpl;
 import com.undabot.weatherapp.ui.adapters.EditCityListAdapter;
 import com.undabot.weatherapp.ui.custom.DynamicListView;
-import com.undabot.weatherapp.ui.util.ListOnDeleteItemClick;
-import com.undabot.weatherapp.ui.util.ListOnReorderListener;
 import com.undabot.weatherapp.ui.views.EditCityListView;
 
 import java.util.ArrayList;
@@ -29,9 +27,10 @@ import butterknife.OnClick;
 
 public class EditCityListActivity extends BaseActivity implements
 		EditCityListView,
-		ListOnDeleteItemClick,
-		ListOnReorderListener {
+		EditCityListAdapter.OnDeleteItemListener,
+		DynamicListView.OnReorderFinishedListener {
 
+	//TODO this should be injected, but error is raised
 	EditCityListPresenter presenter;
 
 	@InjectView(R.id.toolbar) Toolbar toolbar;
@@ -57,15 +56,16 @@ public class EditCityListActivity extends BaseActivity implements
 		mCityList = cityListPreference.getList();
 
 		editCityListAdapter = new EditCityListAdapter(getApplicationContext(), mCityList);
-		editCityListAdapter.setOnReorderListener(this);
-		editCityListAdapter.setOnDeleteClickListener(this);
+		editCityListAdapter.setOnDeleteItemListener(this);
 
 		lvCityList.setItemList(mCityList);
+		lvCityList.setOnReorderFinishedListener(this);
 		lvCityList.setSelectedItemBorderColor(getResources().getColor(R.color.primary));
 		lvCityList.setEmptyView(findViewById(R.id.empty_city_list_layout));
 		lvCityList.setAdapter(editCityListAdapter);
 
-		presenter = new EditCityListPresenterImpl(cityListPreference, selectedPosition);
+		//TODO this should be injected
+		presenter = new EditCityListPresenterImpl(cityListPreference, selectedPosition, new ApiServiceManager().getGooglePlacesApiService());
 		presenter.init(this);
 
 	}
@@ -89,28 +89,24 @@ public class EditCityListActivity extends BaseActivity implements
 	}
 
 	@Override
-	public Context getViewContext() {
-		return this;
-	}
-
-	@Override
-	public Activity getViewActivity() {
-		return this;
-	}
-
-	@Override
-	public void onDeleteBtnClick(int position) {
+	public void onDeleteItemClicked(int position) {
 		presenter.onItemDeletePressed(position);
 	}
 
 	@Override
-	public void onReorder(ArrayList<String> list) {
-		cityListPreference.set(list);
+	public void onListItemsReordered(int oldPosition, int newPosition) {
+		presenter.OnReorderFinished(mCityList, oldPosition, newPosition);
+	}
+
+
+	@Override
+	public Context getViewContext() {
+		return this;
 	}
 
 	@OnClick(R.id.fab_add_city)
 	public void onAddCityClick() {
-		presenter.onAddBtnPressed();
+		presenter.onAddButtonPressed(this);
 	}
 }
 

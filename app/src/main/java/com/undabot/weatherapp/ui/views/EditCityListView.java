@@ -7,4 +7,5 @@ public interface EditCityListView extends BaseView {
 	public void displayAddDialog(AlertDialog dialog);
 
 	public void notifyDataSetChange();
+
 }

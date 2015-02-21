@@ -4,9 +4,11 @@ import android.app.Activity;
 
 import com.undabot.weatherapp.ui.views.EditCityListView;
 
-public interface EditCityListPresenter extends BasePresenter<EditCityListView> {
+import java.util.ArrayList;
 
-	public void onAddBtnPressed();
+public interface EditCityListPresenter extends LifecyclePresenter<EditCityListView> {
+
+	public void onAddButtonPressed(Activity activity);
 
 	public void onAddCityToList(String cityName);
 
@@ -14,4 +16,5 @@ public interface EditCityListPresenter extends BasePresenter<EditCityListView> {
 
 	public void onBackButtonPressed(Activity activity);
 
+	public void OnReorderFinished(ArrayList<String> list, int oldPosition, int newPosition);
 }
