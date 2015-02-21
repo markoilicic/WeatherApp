@@ -36,6 +36,7 @@ public class EditCityListActivity extends BaseActivity implements
 	@InjectView(R.id.toolbar) Toolbar toolbar;
 	@InjectView(R.id.lv_edit_activity_list) DynamicListView lvCityList;
 
+	//TODO this should be removed when presenter is injected
 	@Inject @CityList StringArrayPreference cityListPreference;
 	@Inject @SelectedPosition IntPreference selectedPosition;
 
@@ -53,21 +54,11 @@ public class EditCityListActivity extends BaseActivity implements
 		setSupportActionBar(toolbar);
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-		mCityList = cityListPreference.getList();
-
-		editCityListAdapter = new EditCityListAdapter(getApplicationContext(), mCityList);
-		editCityListAdapter.setOnDeleteItemListener(this);
-
-		lvCityList.setItemList(mCityList);
-		lvCityList.setOnReorderFinishedListener(this);
-		lvCityList.setSelectedItemBorderColor(getResources().getColor(R.color.primary));
-		lvCityList.setEmptyView(findViewById(R.id.empty_city_list_layout));
-		lvCityList.setAdapter(editCityListAdapter);
-
-		//TODO this should be injected
+		//TODO this should be removed when presenter is injected
 		presenter = new EditCityListPresenterImpl(cityListPreference, selectedPosition, new ApiServiceManager().getGooglePlacesApiService());
 		presenter.init(this);
 
+		presenter.onCreate();
 	}
 
 	@Override
@@ -81,9 +72,23 @@ public class EditCityListActivity extends BaseActivity implements
 	}
 
 	@Override
-	public void notifyDataSetChange() {
+	public void setupListAndAdapters(ArrayList<String> cityList) {
+		mCityList = cityList;
+
+		editCityListAdapter = new EditCityListAdapter(getApplicationContext(), mCityList);
+		editCityListAdapter.setOnDeleteItemListener(this);
+
+		lvCityList.setItemList(mCityList);
+		lvCityList.setOnReorderFinishedListener(this);
+		lvCityList.setSelectedItemBorderColor(getResources().getColor(R.color.primary));
+		lvCityList.setEmptyView(findViewById(R.id.empty_city_list_layout));
+		lvCityList.setAdapter(editCityListAdapter);
+	}
+
+	@Override
+	public void notifyDataSetChange(ArrayList<String> cityList) {
 		mCityList.clear();
-		mCityList.addAll(cityListPreference.getList());
+		mCityList.addAll(cityList);
 		editCityListAdapter.notifyDataSetChanged();
 		editCityListAdapter.refreshIds();
 	}

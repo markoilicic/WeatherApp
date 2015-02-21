@@ -51,14 +51,14 @@ public class EditCityListPresenterImpl implements EditCityListPresenter {
 	@Override
 	public void onAddCityToList(String cityName) {
 		mCityListPreference.addItem(cityName);
-		view.notifyDataSetChange();
+		view.notifyDataSetChange(mCityListPreference.getList());
 	}
 
 	@Override
 	public void onItemDeletePressed(int position) {
 		mCityListPreference.removeItem(position);
 		handleDrawerSelectedPositionOnDelete(position);
-		view.notifyDataSetChange();
+		view.notifyDataSetChange(mCityListPreference.getList());
 	}
 
 	@Override
@@ -73,7 +73,7 @@ public class EditCityListPresenterImpl implements EditCityListPresenter {
 
 	@Override
 	public void onCreate() {
-
+		view.setupListAndAdapters(mCityListPreference.getList());
 	}
 
 	@Override
