@@ -14,8 +14,6 @@ import dagger.Module;
 import dagger.Provides;
 
 @Module(
-		//TODO library = true should be removed
-		library = true,
 		addsTo = MainModule.class,
 		injects = {
 				BaseActivity.class,
