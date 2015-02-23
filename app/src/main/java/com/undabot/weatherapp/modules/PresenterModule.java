@@ -7,7 +7,6 @@ import com.undabot.weatherapp.modules.qualifiers.CityList;
 import com.undabot.weatherapp.modules.qualifiers.SelectedPosition;
 import com.undabot.weatherapp.presenters.EditCityListPresenter;
 import com.undabot.weatherapp.presenters.EditCityListPresenterImpl;
-import com.undabot.weatherapp.ui.BaseActivity;
 import com.undabot.weatherapp.ui.EditCityListActivity;
 
 import dagger.Module;
@@ -16,8 +15,7 @@ import dagger.Provides;
 @Module(
 		addsTo = MainModule.class,
 		injects = {
-				BaseActivity.class,
-				EditCityListActivity.class,
+				EditCityListActivity.class
 		}
 
 )
