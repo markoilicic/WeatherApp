@@ -8,8 +8,6 @@ import com.undabot.weatherapp.data.prefs.StringArrayPreference;
 import com.undabot.weatherapp.modules.qualifiers.ApplicationContext;
 import com.undabot.weatherapp.modules.qualifiers.CityList;
 import com.undabot.weatherapp.modules.qualifiers.SelectedPosition;
-import com.undabot.weatherapp.ui.CityWeatherActivity;
-import com.undabot.weatherapp.ui.EditCityListActivity;
 
 import javax.inject.Singleton;
 
@@ -17,10 +15,6 @@ import dagger.Module;
 import dagger.Provides;
 
 @Module(
-		injects = {
-				CityWeatherActivity.class,
-				EditCityListActivity.class,
-		},
 		library = true,
 		complete = false
 )

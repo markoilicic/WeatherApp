@@ -5,11 +5,9 @@ import dagger.Module;
 @Module(
 		complete = false,
 		includes = {
-				OpenWeatherApiModule.class,
-				GooglePlacesApiModule.class,
+				ApiModule.class,
 				NetworkModule.class,
 				PreferencesModule.class,
-				LogModule.class,
 		}
 )
 public final class DataModule {

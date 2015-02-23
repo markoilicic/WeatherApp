@@ -16,5 +16,5 @@ public interface EditCityListPresenter extends LifecyclePresenter<EditCityListVi
 
 	public void onBackButtonPressed(Activity activity);
 
-	public void OnReorderFinished(ArrayList<String> list, int oldPosition, int newPosition);
+	public void onReorderFinished(ArrayList<String> list, int oldPosition, int newPosition);
 }

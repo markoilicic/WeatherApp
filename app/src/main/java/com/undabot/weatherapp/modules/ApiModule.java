@@ -7,10 +7,13 @@ import dagger.Provides;
 import retrofit.RestAdapter;
 
 @Module(
-		library = true,
+		includes = {
+				OpenWeatherApiModule.class,
+				GooglePlacesApiModule.class
+		},
 		complete = false
 )
-public final class LogModule {
+public class ApiModule {
 
 	@Provides @Singleton
 	public RestAdapter.LogLevel provideLogLevel() {

@@ -66,7 +66,7 @@ public class EditCityListPresenterImpl implements EditCityListPresenter {
 		NavUtils.navigateUpFromSameTask(activity);
 	}
 
-	@Override public void OnReorderFinished(ArrayList<String> list, int oldPosition, int newPosition) {
+	@Override public void onReorderFinished(ArrayList<String> list, int oldPosition, int newPosition) {
 		mCityListPreference.set(list);
 		handleDrawerSelectedPositionChangeOnReorder(oldPosition, newPosition);
 	}

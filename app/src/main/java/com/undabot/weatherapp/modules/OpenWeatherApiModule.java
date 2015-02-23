@@ -5,7 +5,6 @@ import com.undabot.weatherapp.data.api.ApiConstants;
 import com.undabot.weatherapp.data.api.OpenWeatherAPIService;
 import com.undabot.weatherapp.data.api.OpenWeatherHeader;
 import com.undabot.weatherapp.modules.qualifiers.OpenWeather;
-import com.undabot.weatherapp.ui.CityWeatherFragment;
 
 import javax.inject.Singleton;
 
@@ -19,9 +18,6 @@ import retrofit.client.Client;
 import retrofit.client.OkClient;
 
 @Module(
-		injects = {
-				CityWeatherFragment.class
-		},
 		library = true,
 		complete = false
 )

@@ -6,13 +6,7 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 
 import com.undabot.weatherapp.R;
-import com.undabot.weatherapp.data.api.ApiServiceManager;
-import com.undabot.weatherapp.data.prefs.IntPreference;
-import com.undabot.weatherapp.data.prefs.StringArrayPreference;
-import com.undabot.weatherapp.modules.qualifiers.CityList;
-import com.undabot.weatherapp.modules.qualifiers.SelectedPosition;
 import com.undabot.weatherapp.presenters.EditCityListPresenter;
-import com.undabot.weatherapp.presenters.EditCityListPresenterImpl;
 import com.undabot.weatherapp.ui.adapters.EditCityListAdapter;
 import com.undabot.weatherapp.ui.custom.DynamicListView;
 import com.undabot.weatherapp.ui.views.EditCityListView;
@@ -30,18 +24,12 @@ public class EditCityListActivity extends BaseActivity implements
 		EditCityListAdapter.OnDeleteItemListener,
 		DynamicListView.OnReorderFinishedListener {
 
-	//TODO this should be injected, but error is raised
-	EditCityListPresenter presenter;
+	@Inject EditCityListPresenter presenter;
 
 	@InjectView(R.id.toolbar) Toolbar toolbar;
 	@InjectView(R.id.lv_edit_activity_list) DynamicListView lvCityList;
 
-	//TODO this should be removed when presenter is injected
-	@Inject @CityList StringArrayPreference cityListPreference;
-	@Inject @SelectedPosition IntPreference selectedPosition;
-
 	private ArrayList<String> mCityList;
-
 	private EditCityListAdapter editCityListAdapter;
 
 	@Override
@@ -54,10 +42,7 @@ public class EditCityListActivity extends BaseActivity implements
 		setSupportActionBar(toolbar);
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-		//TODO this should be removed when presenter is injected
-		presenter = new EditCityListPresenterImpl(cityListPreference, selectedPosition, new ApiServiceManager().getGooglePlacesApiService());
 		presenter.init(this);
-
 		presenter.onCreate();
 	}
 
@@ -100,7 +85,7 @@ public class EditCityListActivity extends BaseActivity implements
 
 	@Override
 	public void onListItemsReordered(int oldPosition, int newPosition) {
-		presenter.OnReorderFinished(mCityList, oldPosition, newPosition);
+		presenter.onReorderFinished(mCityList, oldPosition, newPosition);
 	}
 
 

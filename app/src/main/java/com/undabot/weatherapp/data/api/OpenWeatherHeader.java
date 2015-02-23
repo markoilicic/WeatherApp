@@ -1,9 +1,11 @@
 package com.undabot.weatherapp.data.api;
 
 import javax.inject.Inject;
+import javax.inject.Singleton;
 
 import retrofit.RequestInterceptor;
 
+@Singleton
 public class OpenWeatherHeader implements RequestInterceptor {
 
 	@Inject
