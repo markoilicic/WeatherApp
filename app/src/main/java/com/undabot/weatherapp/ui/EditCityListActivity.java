@@ -1,5 +1,6 @@
 package com.undabot.weatherapp.ui;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.os.Bundle;
@@ -91,6 +92,11 @@ public class EditCityListActivity extends BaseActivity implements
 
 	@Override
 	public Context getViewContext() {
+		return this;
+	}
+
+	@Override
+	public Activity getViewActivity() {
 		return this;
 	}
 

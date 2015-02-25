@@ -5,7 +5,7 @@ import com.undabot.weatherapp.data.model.OpenWeatherApi.ForecastDayWeather;
 
 import java.util.List;
 
-public interface CityWeatherView extends BaseView {
+public interface CityWeatherFragmentView extends BaseView {
 
 	public void setRefreshingViews(boolean refreshing);
 
@@ -14,5 +14,4 @@ public interface CityWeatherView extends BaseView {
 	public void displayOnRefreshErrorViews(String errorMsg);
 
 	public void displayCityWeatherData(CurrentWeatherResponse current, List<ForecastDayWeather> forecast);
-
 }

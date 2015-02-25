@@ -51,6 +51,7 @@ public class EditCityListPresenterImpl implements EditCityListPresenter {
 	@Override
 	public void onAddCityToList(String cityName) {
 		mCityListPreference.addItem(cityName);
+		handleDrawerSelectedPositionOnAdd();
 		view.notifyDataSetChange(mCityListPreference.getList());
 	}
 
@@ -66,7 +67,8 @@ public class EditCityListPresenterImpl implements EditCityListPresenter {
 		NavUtils.navigateUpFromSameTask(activity);
 	}
 
-	@Override public void onReorderFinished(ArrayList<String> list, int oldPosition, int newPosition) {
+	@Override
+	public void onReorderFinished(ArrayList<String> list, int oldPosition, int newPosition) {
 		mCityListPreference.set(list);
 		handleDrawerSelectedPositionChangeOnReorder(oldPosition, newPosition);
 	}
@@ -125,6 +127,15 @@ public class EditCityListPresenterImpl implements EditCityListPresenter {
 	private void handleDrawerSelectedPositionOnDelete(int deletedPosition) {
 		if (mSelectedItem.get() >= deletedPosition && deletedPosition > 0) {
 			mSelectedItem.set(mSelectedItem.get() - 1);
+		}
+	}
+
+	/**
+	 * If there is only one item in the list, set first position as selected
+	 */
+	private void handleDrawerSelectedPositionOnAdd() {
+		if (mCityListPreference.getList().size() == 1) { // 1 item in the list
+			mSelectedItem.set(0); // index 0
 		}
 	}
 

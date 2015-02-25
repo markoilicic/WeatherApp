@@ -1,7 +1,6 @@
 package com.undabot.weatherapp.ui;
 
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -29,7 +28,7 @@ import rx.schedulers.Schedulers;
 import timber.log.Timber;
 
 
-public class CityWeatherFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
+public class CityWeatherFragment extends BaseFragment implements SwipeRefreshLayout.OnRefreshListener {
 
 	public static final String EXTRA_CITY_NAME = "city";
 	private static final int FORECAST_DAYS_NUMBER = 7;
