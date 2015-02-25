@@ -7,11 +7,12 @@ import java.util.List;
 
 public interface CityWeatherFragmentView extends BaseView {
 
-	public void setRefreshingViews(boolean refreshing);
+	public void setRefreshingViews();
 
 	public void displayOnRefreshSuccessViews();
 
 	public void displayOnRefreshErrorViews(String errorMsg);
 
-	public void displayCityWeatherData(CurrentWeatherResponse current, List<ForecastDayWeather> forecast);
+	public void setCityWeatherData(CurrentWeatherResponse current, List<ForecastDayWeather> forecast);
+
 }

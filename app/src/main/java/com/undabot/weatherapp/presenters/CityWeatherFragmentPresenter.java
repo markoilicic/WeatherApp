@@ -4,6 +4,6 @@ import com.undabot.weatherapp.ui.views.CityWeatherFragmentView;
 
 public interface CityWeatherFragmentPresenter extends LifecyclePresenter<CityWeatherFragmentView> {
 
-	public void onRefreshTriggered();
+	public void onRefreshTriggered(String cityName);
 
 }
