@@ -74,22 +74,8 @@ public class CityWeatherActivity extends BaseActivity implements
 
 	@Override
 	public void setupDrawerAndPager(ArrayList<String> cityList) {
-		WeatherPagerAdapter pagerAdapter = new WeatherPagerAdapter(getSupportFragmentManager(), cityList);
-		mPager.setAdapter(pagerAdapter);
-		mPager.setOnPageChangeListener(this);
-
 		DrawerCityListAdapter drawerAdapter = new DrawerCityListAdapter(this, cityList);
-		mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, mToolbar, R.string.drawer_open, R.string.drawer_close) {
-
-			@Override
-			public void onDrawerSlide(View drawerView, float slideOffset) {
-				super.onDrawerSlide(drawerView, slideOffset);
-				//Change toolbar transparency on drawer slide
-				if (slideOffset < 0.4) {
-					mToolbar.setAlpha(1 - slideOffset);
-				}
-			}
-		};
+		mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, mToolbar, R.string.drawer_open, R.string.drawer_close);
 		mDrawerLayout.setDrawerListener(mDrawerToggle);
 		mDrawerToggle.syncState();
 
@@ -97,17 +83,31 @@ public class CityWeatherActivity extends BaseActivity implements
 		lvDrawerCityList.setOnItemClickListener(this);
 		lvDrawerCityList.setEmptyView(findViewById(R.id.empty_city_list_layout));
 
+		WeatherPagerAdapter pagerAdapter = new WeatherPagerAdapter(getSupportFragmentManager(), cityList);
+		mPager.setAdapter(pagerAdapter);
+		mPager.setOnPageChangeListener(this);
+
 	}
 
+	/**
+	 * Method that handle drawer opening/closing
+	 *
+	 * @param shouldOpen boolean
+	 */
 	@Override
-	public void shouldOpenDrawer(boolean open) {
-		if (open && !mDrawerLayout.isDrawerOpen(mDrawerView)) {
+	public void shouldOpenDrawer(boolean shouldOpen) {
+		if (shouldOpen && !mDrawerLayout.isDrawerOpen(mDrawerView)) {
 			mDrawerLayout.openDrawer(mDrawerView);
-		} else if (!open && mDrawerLayout.isDrawerOpen(mDrawerView)) {
+		} else if (!shouldOpen && mDrawerLayout.isDrawerOpen(mDrawerView)) {
 			mDrawerLayout.closeDrawer(mDrawerView);
 		}
 	}
 
+	/**
+	 * Set clicked item in drawer as selected and move pager to that position if necessary
+	 *
+	 * @param position of clicked item in drawer
+	 */
 	@Override
 	public void setSelectedItem(int position) {
 		lvDrawerCityList.setItemChecked(position, true);

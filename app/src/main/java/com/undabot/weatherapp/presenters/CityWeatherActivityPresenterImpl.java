@@ -33,7 +33,7 @@ public class CityWeatherActivityPresenterImpl implements CityWeatherActivityPres
 	public void onCreate() {
 		mCityList = mCityListPref.getList();
 		view.setupDrawerAndPager(mCityList);
-		//show drawer if empty or select selected item
+		//show drawer if list is empty or select last selected item
 		if (mCityList.isEmpty()) {
 			view.shouldOpenDrawer(true);
 		} else {
@@ -61,6 +61,7 @@ public class CityWeatherActivityPresenterImpl implements CityWeatherActivityPres
 
 	@Override
 	public void onBackButtonPressed() {
+		// If drawer is opened, close him on back btn pressed
 		if (view.isDrawerOpened()) {
 			view.shouldOpenDrawer(false);
 		} else {

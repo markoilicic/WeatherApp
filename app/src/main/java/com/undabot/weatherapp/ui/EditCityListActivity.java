@@ -48,11 +48,6 @@ public class EditCityListActivity extends BaseActivity implements
 	}
 
 	@Override
-	public void onBackPressed() {
-		presenter.onBackButtonPressed(this);
-	}
-
-	@Override
 	public void displayAddDialog(AlertDialog dialog) {
 		dialog.show();
 	}
@@ -80,6 +75,11 @@ public class EditCityListActivity extends BaseActivity implements
 	}
 
 	@Override
+	public void onBackPressed() {
+		presenter.onBackButtonPressed(this);
+	}
+
+	@Override
 	public void onDeleteItemClicked(int position) {
 		presenter.onItemDeletePressed(position);
 	}
@@ -88,7 +88,6 @@ public class EditCityListActivity extends BaseActivity implements
 	public void onListItemsReordered(int oldPosition, int newPosition) {
 		presenter.onReorderFinished(mCityList, oldPosition, newPosition);
 	}
-
 
 	@Override
 	public Context getViewContext() {
