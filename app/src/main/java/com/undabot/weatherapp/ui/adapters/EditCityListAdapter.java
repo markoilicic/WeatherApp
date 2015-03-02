@@ -9,15 +9,12 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.undabot.weatherapp.R;
-import com.undabot.weatherapp.data.prefs.IntPreference;
-import com.undabot.weatherapp.data.utils.SharedPrefsUtils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
-import timber.log.Timber;
 
 public class EditCityListAdapter extends ArrayAdapter<String> {
 
@@ -27,14 +24,14 @@ public class EditCityListAdapter extends ArrayAdapter<String> {
 	private ArrayList<String> mCityList;
 	private HashMap<String, Integer> mIdMap = new HashMap<>();
 
+	private OnDeleteItemListener onDeleteClickListener;
+
 	public EditCityListAdapter(Context context, ArrayList<String> cityList) {
 		super(context, R.layout.edit_city_list_item, cityList);
 		this.mContext = context;
 		this.mCityList = cityList;
 
-		for (int i = 0; i < cityList.size(); ++i) {
-			mIdMap.put(cityList.get(i), i);
-		}
+		refreshIds();
 	}
 
 	/*	NOTE:
@@ -43,7 +40,6 @@ public class EditCityListAdapter extends ArrayAdapter<String> {
 	 */
 	@Override
 	public View getView(final int position, View convertView, ViewGroup parent) {
-		Timber.d("getView");
 		final ViewHolder holder;
 		if (convertView == null) {
 			convertView = LayoutInflater.from(mContext).inflate(R.layout.edit_city_list_item, null);
@@ -57,15 +53,9 @@ public class EditCityListAdapter extends ArrayAdapter<String> {
 		holder.btnDelete.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				mCityList.remove(position);
-				SharedPrefsUtils.setCityList(mCityList);
-				// Subtract 1 from selectedPosition if position <= selectedPosition,
-				// so drawer opens the same selected item or the one above if selected is erased
-				IntPreference selectedPosition = new IntPreference(SharedPrefsUtils.getSharedPreferences(), SharedPrefsUtils.KEY_SELECTED_POSITION);
-				if (selectedPosition.get() >= position && position > 0) {
-					selectedPosition.set(selectedPosition.get() - 1);
+				if (onDeleteClickListener != null) {
+					onDeleteClickListener.onDeleteItemClicked(position);
 				}
-				notifyDataSetChanged();
 			}
 		});
 
@@ -79,6 +69,7 @@ public class EditCityListAdapter extends ArrayAdapter<String> {
 		}
 		String item = getItem(position);
 		return mIdMap.get(item);
+
 	}
 
 	@Override
@@ -86,12 +77,36 @@ public class EditCityListAdapter extends ArrayAdapter<String> {
 		return android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.LOLLIPOP;
 	}
 
-	@Override
-	public void notifyDataSetChanged() {
-		super.notifyDataSetChanged();
-		// When reordering is done, DynamicListView calls adapter.notifyDataSetChanged()
-		// So, save the newly ordered list in shared prefs
-		SharedPrefsUtils.setCityList(mCityList);
+	/**
+	 * Call this method whenever you add/remove items in the list to refresh items ids
+	 */
+	public void refreshIds() {
+		mIdMap.clear();
+		for (int i = 0; i < mCityList.size(); ++i) {
+			mIdMap.put(mCityList.get(i), i);
+		}
+	}
+
+	/**
+	 * Set on delete item listener
+	 *
+	 * @param onDeleteClickListener {@link OnDeleteItemListener}
+	 */
+	public void setOnDeleteItemListener(OnDeleteItemListener onDeleteClickListener) {
+		this.onDeleteClickListener = onDeleteClickListener;
+	}
+
+	/**
+	 * Used for notify that item in list is deleted
+	 */
+	public interface OnDeleteItemListener {
+
+		/**
+		 * Returns deleted position
+		 *
+		 * @param position deleted item position
+		 */
+		public void onDeleteItemClicked(int position);
 	}
 
 	static class ViewHolder {

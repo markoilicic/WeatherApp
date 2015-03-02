@@ -1,31 +1,31 @@
 package com.undabot.weatherapp.ui;
 
+import android.app.Activity;
 import android.app.AlertDialog;
-import android.content.DialogInterface;
+import android.content.Context;
 import android.os.Bundle;
-import android.support.v4.app.NavUtils;
-import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
-import android.text.Editable;
-import android.text.TextWatcher;
-import android.view.View;
-import android.widget.TextView;
 
 import com.undabot.weatherapp.R;
-import com.undabot.weatherapp.data.utils.SharedPrefsUtils;
-import com.undabot.weatherapp.data.utils.TextFormatUtils;
+import com.undabot.weatherapp.presenters.EditCityListPresenter;
 import com.undabot.weatherapp.ui.adapters.EditCityListAdapter;
-import com.undabot.weatherapp.ui.adapters.PlacesPredictionAdapter;
-import com.undabot.weatherapp.ui.custom.DelayAutoCompleteTextView;
 import com.undabot.weatherapp.ui.custom.DynamicListView;
+import com.undabot.weatherapp.ui.views.EditCityListView;
 
 import java.util.ArrayList;
+
+import javax.inject.Inject;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
 
-public class EditCityListActivity extends ActionBarActivity {
+public class EditCityListActivity extends BaseActivity implements
+		EditCityListView,
+		EditCityListAdapter.OnDeleteItemListener,
+		DynamicListView.OnReorderFinishedListener {
+
+	@Inject EditCityListPresenter presenter;
 
 	@InjectView(R.id.toolbar) Toolbar toolbar;
 	@InjectView(R.id.lv_edit_activity_list) DynamicListView lvCityList;
@@ -43,85 +43,66 @@ public class EditCityListActivity extends ActionBarActivity {
 		setSupportActionBar(toolbar);
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-		mCityList = SharedPrefsUtils.getCityList();
+		presenter.init(this);
+		presenter.onCreate();
+	}
 
-		// Add city list to adapter and DynamicListView
+	@Override
+	public void displayAddDialog(AlertDialog dialog) {
+		dialog.show();
+	}
+
+	@Override
+	public void setupListAndAdapters(ArrayList<String> cityList) {
+		mCityList = cityList;
+
 		editCityListAdapter = new EditCityListAdapter(getApplicationContext(), mCityList);
+		editCityListAdapter.setOnDeleteItemListener(this);
+
 		lvCityList.setItemList(mCityList);
-
+		lvCityList.setOnReorderFinishedListener(this);
 		lvCityList.setSelectedItemBorderColor(getResources().getColor(R.color.primary));
-		lvCityList.setAdapter(editCityListAdapter);
 		lvCityList.setEmptyView(findViewById(R.id.empty_city_list_layout));
+		lvCityList.setAdapter(editCityListAdapter);
+	}
 
+	@Override
+	public void notifyDataSetChange(ArrayList<String> cityList) {
+		mCityList.clear();
+		mCityList.addAll(cityList);
+		editCityListAdapter.notifyDataSetChanged();
+		editCityListAdapter.refreshIds();
 	}
 
 	@Override
 	public void onBackPressed() {
-		NavUtils.navigateUpFromSameTask(this);
+		presenter.onBackButtonPressed(this);
 	}
 
-	/**
-	 * Creates and shows dialog for adding new city
-	 */
-	private void showAddNewCityDialog() {
-		//Get custom view for dialog
-		View dialogView = getLayoutInflater().inflate(R.layout.add_new_city_dialog, null);
-		final DelayAutoCompleteTextView input = (DelayAutoCompleteTextView) dialogView.findViewById(R.id.et_input);
-		final TextView tvWarningMsg = (TextView) dialogView.findViewById(R.id.tv_warning_message);
+	@Override
+	public void onDeleteItemClicked(int position) {
+		presenter.onItemDeletePressed(position);
+	}
 
-		//Add adapter for places prediction
-		input.setAdapter(new PlacesPredictionAdapter(this));
+	@Override
+	public void onListItemsReordered(int oldPosition, int newPosition) {
+		presenter.onReorderFinished(mCityList, oldPosition, newPosition);
+	}
 
-		//Create alert dialog
-		final AlertDialog dialog = new AlertDialog.Builder(this)
-				.setTitle(R.string.add_city_dialog_title)
-				.setView(dialogView)
-				.setPositiveButton(R.string.text_ok, new DialogInterface.OnClickListener() {
-					public void onClick(DialogInterface dialog, int whichButton) {
-						mCityList.add(TextFormatUtils.capitalizeFirstLetterInEachWord(input.getText().toString()));
-						SharedPrefsUtils.setCityList(mCityList);
-						editCityListAdapter.notifyDataSetChanged();
-					}
-				}).setNegativeButton(R.string.text_cancel, null).show();
+	@Override
+	public Context getViewContext() {
+		return this;
+	}
 
-		//Disable positive button at start
-		dialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(false);
-
-		//Create onTextChangeListener
-		input.addTextChangedListener(new TextWatcher() {
-
-			@Override
-			public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-			}
-
-			@Override
-			public void onTextChanged(CharSequence s, int start, int before, int count) {
-			}
-
-			@Override
-			public void afterTextChanged(Editable input) {
-				String inputText = TextFormatUtils.capitalizeFirstLetterInEachWord(input.toString());
-				//Check if city is already in list or length<3 and disable OK button
-				if (mCityList.contains(inputText)) {
-					dialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(false);
-					tvWarningMsg.setText(R.string.add_city_dialog_warning_in_list);
-				} else if (inputText.length() < 3) {
-					dialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(false);
-					tvWarningMsg.setText("");
-				} else {
-					dialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(true);
-					tvWarningMsg.setText("");
-				}
-			}
-		});
-
+	@Override
+	public Activity getViewActivity() {
+		return this;
 	}
 
 	@OnClick(R.id.fab_add_city)
 	public void onAddCityClick() {
-		showAddNewCityDialog();
+		presenter.onAddButtonPressed(this);
 	}
-
 }
 
 
